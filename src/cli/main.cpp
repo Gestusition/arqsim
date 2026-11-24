@@ -81,6 +81,7 @@ void printHelp() {
         "  --reps N                 repetitions                       (default 1 for run, 5 for sweep)\n"
         "  --seed S                 base pseudo-random seed           (default 2026)\n"
         "  --csv PATH               write raw per-run results\n"
+        "  --max-time S, --stall S  abort a run after S s in total / S s without progress (300 / 20)\n"
         "  --verbose                print a packet-level event trace\n\n"
         "EXAMPLES\n"
         "  arqsim run --proto sr --win 8 --loss 0.1 --rtt 50 --reps 5\n"
@@ -438,6 +439,7 @@ int cmdSweep(const Args& a) {
     plan.fileBytes = std::size_t(a.num("file-kb", 50) * 1000);
     plan.baseSeed = std::uint32_t(a.num("seed", 2026));
     plan.maxTimeMs = a.num("max-time", 300.0) * 1000.0;
+    plan.stallMs = a.num("stall", 20.0) * 1000.0;
     warnUnused(a);
     return runPreset(custom, a, out);
 }
@@ -604,6 +606,7 @@ int cmdSender(const Args& a) {
 }  // namespace
 
 int main(int argc, char** argv) {
+    std::setvbuf(stdout, nullptr, _IOLBF, 1 << 16);  // line-buffered even when redirected
     if (argc < 2) {
         printHelp();
         return 0;
