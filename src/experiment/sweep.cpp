@@ -213,9 +213,9 @@ std::vector<Preset> builtinPresets() {
     {  // 3) Physical-layer modulation study.
         Preset p;
         p.name = "modulation";
-        p.description = "BPSK/QPSK/16-QAM/64-QAM/AMC over AWGN, SNR 0-30 dB, GBN & SR N=8";
+        p.description = "BPSK/QPSK/16-QAM/64-QAM/AMC over AWGN, SNR 0-30 dB, GBN & SR N=16";
         p.plan.protocols = {GBN, SR};
-        p.plan.windows = {8};
+        p.plan.windows = {16}  /* covers the 6 Mbit/s x 20 ms bandwidth-delay product */;
         p.plan.rtts = {20};
         p.plan.modulations = {"bpsk", "qpsk", "16qam", "64qam", "auto"};
         p.plan.snrs = {6, 9, 12, 15, 18, 21, 24, 27, 30};
@@ -224,9 +224,9 @@ std::vector<Preset> builtinPresets() {
         p.plan.maxTimeMs = 30000;
         p.plan.stallMs = 3000;  // hopeless SNR/modulation pairs abort quickly
         p.figures = {
-            {"mod_gbn_throughput_vs_snr.svg", "GBN (N=8) throughput vs SNR per modulation", "snr_db", "throughput_kbps",
+            {"mod_gbn_throughput_vs_snr.svg", "GBN (N=16) throughput vs SNR per modulation", "snr_db", "throughput_kbps",
              "SNR Es/N0 (dB)", "Throughput (kbit/s)", {"modulation"}, {{"protocol", "gbn"}}, "", false},
-            {"mod_sr_throughput_vs_snr.svg", "SR (N=8) throughput vs SNR per modulation", "snr_db", "throughput_kbps",
+            {"mod_sr_throughput_vs_snr.svg", "SR (N=16) throughput vs SNR per modulation", "snr_db", "throughput_kbps",
              "SNR Es/N0 (dB)", "Throughput (kbit/s)", {"modulation"}, {{"protocol", "sr"}}, "", false},
             {"mod_retx_vs_snr.svg", "Retransmissions vs SNR (GBN)", "snr_db", "retransmissions", "SNR Es/N0 (dB)",
              "Retransmitted DATA packets", {"modulation"}, {{"protocol", "gbn"}}, "", false},

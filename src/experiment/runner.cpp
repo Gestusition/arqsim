@@ -81,7 +81,8 @@ RunResult runExperiment(const RunSpec& spec, const std::vector<std::uint8_t>* fi
     r.integrityPass = tx.completed && r.bytesReceived == file.size() && r.sha256Sent == r.sha256Received;
 
     r.transferMs = tx.transferMs;
-    r.throughputKbps = tx.transferMs > 0 ? double(file.size()) * 8.0 / tx.transferMs : 0.0;  // bits/ms = kbit/s
+    // An aborted transfer delivered nothing usable: its goodput is zero.
+    r.throughputKbps = (tx.completed && tx.transferMs > 0) ? double(file.size()) * 8.0 / tx.transferMs : 0.0;  // kbit/s
     r.efficiency = tx.payloadBytesSent ? double(file.size()) / double(tx.payloadBytesSent) : 0.0;
     const double airtimeMs = double(tx.packets) * double(frameBytes) * 8.0 / r.linkRateBps * 1000.0;
     r.utilization = tx.transferMs > 0 ? std::min(1.0, airtimeMs / tx.transferMs) : 0.0;
