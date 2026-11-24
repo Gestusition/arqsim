@@ -44,12 +44,12 @@
 <rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
 <text x="324" y="442" text-anchor="middle" font-size="13">DATA/ACK loss probability</text>
 <text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Retransmitted DATA packets</text>
-<path d="M78,354 L102.6,349.6 L201,342.12 L324,326.72 L570,288.44" fill="none" stroke="#2563eb" stroke-width="2"/>
+<path d="M78,354 L102.6,350.48 L201,342.12 L324,326.72 L570,288.44" fill="none" stroke="#2563eb" stroke-width="2"/>
 <circle cx="78" cy="354" r="3.5" fill="#2563eb"/>
-<line x1="102.6" y1="353.463" x2="102.6" y2="345.737" stroke="#2563eb"/>
-<line x1="98.6" y1="353.463" x2="106.6" y2="353.463" stroke="#2563eb"/>
-<line x1="98.6" y1="345.737" x2="106.6" y2="345.737" stroke="#2563eb"/>
-<circle cx="102.6" cy="349.6" r="3.5" fill="#2563eb"/>
+<line x1="102.6" y1="352.923" x2="102.6" y2="348.037" stroke="#2563eb"/>
+<line x1="98.6" y1="352.923" x2="106.6" y2="352.923" stroke="#2563eb"/>
+<line x1="98.6" y1="348.037" x2="106.6" y2="348.037" stroke="#2563eb"/>
+<circle cx="102.6" cy="350.48" r="3.5" fill="#2563eb"/>
 <line x1="201" y1="348.698" x2="201" y2="335.542" stroke="#2563eb"/>
 <line x1="197" y1="348.698" x2="205" y2="348.698" stroke="#2563eb"/>
 <line x1="197" y1="335.542" x2="205" y2="335.542" stroke="#2563eb"/>
@@ -84,16 +84,16 @@
 <circle cx="570" cy="131.36" r="3.5" fill="#dc2626"/>
 <line x1="584" y1="76" x2="608" y2="76" stroke="#dc2626" stroke-width="2"/>
 <text x="614" y="80" font-size="12">GBN N=8</text>
-<path d="M78,354 L102.6,345.64 L201,338.6 L324,326.72 L570,288.44" fill="none" stroke="#16a34a" stroke-width="2"/>
+<path d="M78,354 L102.6,350.48 L201,342.12 L324,326.72 L570,288.44" fill="none" stroke="#16a34a" stroke-width="2"/>
 <circle cx="78" cy="354" r="3.5" fill="#16a34a"/>
-<line x1="102.6" y1="358.363" x2="102.6" y2="332.917" stroke="#16a34a"/>
-<line x1="98.6" y1="358.363" x2="106.6" y2="358.363" stroke="#16a34a"/>
-<line x1="98.6" y1="332.917" x2="106.6" y2="332.917" stroke="#16a34a"/>
-<circle cx="102.6" cy="345.64" r="3.5" fill="#16a34a"/>
-<line x1="201" y1="347.862" x2="201" y2="329.338" stroke="#16a34a"/>
-<line x1="197" y1="347.862" x2="205" y2="347.862" stroke="#16a34a"/>
-<line x1="197" y1="329.338" x2="205" y2="329.338" stroke="#16a34a"/>
-<circle cx="201" cy="338.6" r="3.5" fill="#16a34a"/>
+<line x1="102.6" y1="352.923" x2="102.6" y2="348.037" stroke="#16a34a"/>
+<line x1="98.6" y1="352.923" x2="106.6" y2="352.923" stroke="#16a34a"/>
+<line x1="98.6" y1="348.037" x2="106.6" y2="348.037" stroke="#16a34a"/>
+<circle cx="102.6" cy="350.48" r="3.5" fill="#16a34a"/>
+<line x1="201" y1="348.698" x2="201" y2="335.542" stroke="#16a34a"/>
+<line x1="197" y1="348.698" x2="205" y2="348.698" stroke="#16a34a"/>
+<line x1="197" y1="335.542" x2="205" y2="335.542" stroke="#16a34a"/>
+<circle cx="201" cy="342.12" r="3.5" fill="#16a34a"/>
 <line x1="324" y1="339.761" x2="324" y2="313.679" stroke="#16a34a"/>
 <line x1="320" y1="339.761" x2="328" y2="339.761" stroke="#16a34a"/>
 <line x1="320" y1="313.679" x2="328" y2="313.679" stroke="#16a34a"/>

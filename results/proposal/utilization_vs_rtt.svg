@@ -38,23 +38,20 @@
 <rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
 <text x="324" y="442" text-anchor="middle" font-size="13">RTT (ms)</text>
 <text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Link utilization</text>
-<path d="M102.6,299.489 L201,371.875 L324,384.356 L570,391.044" fill="none" stroke="#2563eb" stroke-width="2"/>
-<line x1="102.6" y1="299.783" x2="102.6" y2="299.195" stroke="#2563eb"/>
-<line x1="98.6" y1="299.783" x2="106.6" y2="299.783" stroke="#2563eb"/>
-<line x1="98.6" y1="299.195" x2="106.6" y2="299.195" stroke="#2563eb"/>
-<circle cx="102.6" cy="299.489" r="3.5" fill="#2563eb"/>
-<line x1="201" y1="371.894" x2="201" y2="371.855" stroke="#2563eb"/>
-<line x1="197" y1="371.894" x2="205" y2="371.894" stroke="#2563eb"/>
-<line x1="197" y1="371.855" x2="205" y2="371.855" stroke="#2563eb"/>
-<circle cx="201" cy="371.875" r="3.5" fill="#2563eb"/>
-<line x1="324" y1="384.38" x2="324" y2="384.333" stroke="#2563eb"/>
-<line x1="320" y1="384.38" x2="328" y2="384.38" stroke="#2563eb"/>
-<line x1="320" y1="384.333" x2="328" y2="384.333" stroke="#2563eb"/>
-<circle cx="324" cy="384.356" r="3.5" fill="#2563eb"/>
-<line x1="570" y1="391.084" x2="570" y2="391.005" stroke="#2563eb"/>
-<line x1="566" y1="391.084" x2="574" y2="391.084" stroke="#2563eb"/>
-<line x1="566" y1="391.005" x2="574" y2="391.005" stroke="#2563eb"/>
-<circle cx="570" cy="391.044" r="3.5" fill="#2563eb"/>
+<path d="M102.6,298.201 L201,371.713 L324,384.307 L570,391.023" fill="none" stroke="#2563eb" stroke-width="2"/>
+<line x1="102.6" y1="298.35" x2="102.6" y2="298.051" stroke="#2563eb"/>
+<line x1="98.6" y1="298.35" x2="106.6" y2="298.35" stroke="#2563eb"/>
+<line x1="98.6" y1="298.051" x2="106.6" y2="298.051" stroke="#2563eb"/>
+<circle cx="102.6" cy="298.201" r="3.5" fill="#2563eb"/>
+<line x1="201" y1="371.732" x2="201" y2="371.693" stroke="#2563eb"/>
+<line x1="197" y1="371.732" x2="205" y2="371.732" stroke="#2563eb"/>
+<line x1="197" y1="371.693" x2="205" y2="371.693" stroke="#2563eb"/>
+<circle cx="201" cy="371.713" r="3.5" fill="#2563eb"/>
+<circle cx="324" cy="384.307" r="3.5" fill="#2563eb"/>
+<line x1="570" y1="391.043" x2="570" y2="391.004" stroke="#2563eb"/>
+<line x1="566" y1="391.043" x2="574" y2="391.043" stroke="#2563eb"/>
+<line x1="566" y1="391.004" x2="574" y2="391.004" stroke="#2563eb"/>
+<circle cx="570" cy="391.023" r="3.5" fill="#2563eb"/>
 <line x1="584" y1="56" x2="608" y2="56" stroke="#2563eb" stroke-width="2"/>
 <text x="614" y="60" font-size="12">SW</text>
 <path d="M102.6,296.413 L201,371.6 L324,384.272 L570,390.995" fill="none" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
@@ -64,17 +61,20 @@
 <circle cx="570" cy="390.995" r="3.5" fill="#2563eb"/>
 <line x1="584" y1="76" x2="608" y2="76" stroke="#2563eb" stroke-width="2" stroke-dasharray="6,4"/>
 <text x="614" y="80" font-size="12">SW (theory)</text>
-<path d="M102.6,63.6493 L201,297.99 L324,345.728 L570,371.213" fill="none" stroke="#dc2626" stroke-width="2"/>
-<line x1="102.6" y1="63.8533" x2="102.6" y2="63.4452" stroke="#dc2626"/>
-<line x1="98.6" y1="63.8533" x2="106.6" y2="63.8533" stroke="#dc2626"/>
-<line x1="98.6" y1="63.4452" x2="106.6" y2="63.4452" stroke="#dc2626"/>
-<circle cx="102.6" cy="63.6493" r="3.5" fill="#dc2626"/>
-<line x1="201" y1="298.111" x2="201" y2="297.868" stroke="#dc2626"/>
-<line x1="197" y1="298.111" x2="205" y2="298.111" stroke="#dc2626"/>
-<line x1="197" y1="297.868" x2="205" y2="297.868" stroke="#dc2626"/>
-<circle cx="201" cy="297.99" r="3.5" fill="#dc2626"/>
-<circle cx="324" cy="345.728" r="3.5" fill="#dc2626"/>
-<circle cx="570" cy="371.213" r="3.5" fill="#dc2626"/>
+<path d="M102.6,63.0931 L201,297.511 L324,345.524 L570,371.178" fill="none" stroke="#dc2626" stroke-width="2"/>
+<line x1="102.6" y1="63.1517" x2="102.6" y2="63.0345" stroke="#dc2626"/>
+<line x1="98.6" y1="63.1517" x2="106.6" y2="63.1517" stroke="#dc2626"/>
+<line x1="98.6" y1="63.0345" x2="106.6" y2="63.0345" stroke="#dc2626"/>
+<circle cx="102.6" cy="63.0931" r="3.5" fill="#dc2626"/>
+<line x1="201" y1="297.531" x2="201" y2="297.491" stroke="#dc2626"/>
+<line x1="197" y1="297.531" x2="205" y2="297.531" stroke="#dc2626"/>
+<line x1="197" y1="297.491" x2="205" y2="297.491" stroke="#dc2626"/>
+<circle cx="201" cy="297.511" r="3.5" fill="#dc2626"/>
+<line x1="324" y1="345.543" x2="324" y2="345.504" stroke="#dc2626"/>
+<line x1="320" y1="345.543" x2="328" y2="345.543" stroke="#dc2626"/>
+<line x1="320" y1="345.504" x2="328" y2="345.504" stroke="#dc2626"/>
+<circle cx="324" cy="345.524" r="3.5" fill="#dc2626"/>
+<circle cx="570" cy="371.178" r="3.5" fill="#dc2626"/>
 <line x1="584" y1="96" x2="608" y2="96" stroke="#dc2626" stroke-width="2"/>
 <text x="614" y="100" font-size="12">GBN N=4</text>
 <path d="M102.6,46 L201,292.365 L324,343.123 L570,370.016" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
@@ -84,23 +84,20 @@
 <circle cx="570" cy="370.016" r="3.5" fill="#dc2626"/>
 <line x1="584" y1="116" x2="608" y2="116" stroke="#dc2626" stroke-width="2" stroke-dasharray="6,4"/>
 <text x="614" y="120" font-size="12">GBN N=4 (theory)</text>
-<path d="M102.6,63.7901 L201,213.087 L324,301.13 L570,348.46" fill="none" stroke="#16a34a" stroke-width="2"/>
-<line x1="102.6" y1="63.9821" x2="102.6" y2="63.5981" stroke="#16a34a"/>
-<line x1="98.6" y1="63.9821" x2="106.6" y2="63.9821" stroke="#16a34a"/>
-<line x1="98.6" y1="63.5981" x2="106.6" y2="63.5981" stroke="#16a34a"/>
-<circle cx="102.6" cy="63.7901" r="3.5" fill="#16a34a"/>
-<line x1="201" y1="213.276" x2="201" y2="212.898" stroke="#16a34a"/>
-<line x1="197" y1="213.276" x2="205" y2="213.276" stroke="#16a34a"/>
-<line x1="197" y1="212.898" x2="205" y2="212.898" stroke="#16a34a"/>
-<circle cx="201" cy="213.087" r="3.5" fill="#16a34a"/>
-<line x1="324" y1="301.232" x2="324" y2="301.027" stroke="#16a34a"/>
-<line x1="320" y1="301.232" x2="328" y2="301.232" stroke="#16a34a"/>
-<line x1="320" y1="301.027" x2="328" y2="301.027" stroke="#16a34a"/>
-<circle cx="324" cy="301.13" r="3.5" fill="#16a34a"/>
-<line x1="570" y1="348.836" x2="570" y2="348.083" stroke="#16a34a"/>
-<line x1="566" y1="348.836" x2="574" y2="348.836" stroke="#16a34a"/>
-<line x1="566" y1="348.083" x2="574" y2="348.083" stroke="#16a34a"/>
-<circle cx="570" cy="348.46" r="3.5" fill="#16a34a"/>
+<path d="M102.6,63.0861 L201,212.285 L324,300.82 L570,348.227" fill="none" stroke="#16a34a" stroke-width="2"/>
+<line x1="102.6" y1="63.1767" x2="102.6" y2="62.9955" stroke="#16a34a"/>
+<line x1="98.6" y1="63.1767" x2="106.6" y2="63.1767" stroke="#16a34a"/>
+<line x1="98.6" y1="62.9955" x2="106.6" y2="62.9955" stroke="#16a34a"/>
+<circle cx="102.6" cy="63.0861" r="3.5" fill="#16a34a"/>
+<line x1="201" y1="212.328" x2="201" y2="212.241" stroke="#16a34a"/>
+<line x1="197" y1="212.328" x2="205" y2="212.328" stroke="#16a34a"/>
+<line x1="197" y1="212.241" x2="205" y2="212.241" stroke="#16a34a"/>
+<circle cx="201" cy="212.285" r="3.5" fill="#16a34a"/>
+<line x1="324" y1="300.839" x2="324" y2="300.8" stroke="#16a34a"/>
+<line x1="320" y1="300.839" x2="328" y2="300.839" stroke="#16a34a"/>
+<line x1="320" y1="300.8" x2="328" y2="300.8" stroke="#16a34a"/>
+<circle cx="324" cy="300.82" r="3.5" fill="#16a34a"/>
+<circle cx="570" cy="348.227" r="3.5" fill="#16a34a"/>
 <line x1="584" y1="136" x2="608" y2="136" stroke="#16a34a" stroke-width="2"/>
 <text x="614" y="140" font-size="12">GBN N=8</text>
 <path d="M102.6,46 L201,186.694 L324,288.246 L570,342.032" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,4"/>
@@ -110,23 +107,20 @@
 <circle cx="570" cy="342.032" r="3.5" fill="#16a34a"/>
 <line x1="584" y1="156" x2="608" y2="156" stroke="#16a34a" stroke-width="2" stroke-dasharray="6,4"/>
 <text x="614" y="160" font-size="12">GBN N=8 (theory)</text>
-<path d="M102.6,63.7197 L201,116.414 L324,229.117 L570,311.281" fill="none" stroke="#9333ea" stroke-width="2"/>
-<line x1="102.6" y1="63.919" x2="102.6" y2="63.5204" stroke="#9333ea"/>
-<line x1="98.6" y1="63.919" x2="106.6" y2="63.919" stroke="#9333ea"/>
-<line x1="98.6" y1="63.5204" x2="106.6" y2="63.5204" stroke="#9333ea"/>
-<circle cx="102.6" cy="63.7197" r="3.5" fill="#9333ea"/>
-<line x1="201" y1="116.554" x2="201" y2="116.274" stroke="#9333ea"/>
-<line x1="197" y1="116.554" x2="205" y2="116.554" stroke="#9333ea"/>
-<line x1="197" y1="116.274" x2="205" y2="116.274" stroke="#9333ea"/>
-<circle cx="201" cy="116.414" r="3.5" fill="#9333ea"/>
-<line x1="324" y1="229.301" x2="324" y2="228.934" stroke="#9333ea"/>
-<line x1="320" y1="229.301" x2="328" y2="229.301" stroke="#9333ea"/>
-<line x1="320" y1="228.934" x2="328" y2="228.934" stroke="#9333ea"/>
-<circle cx="324" cy="229.117" r="3.5" fill="#9333ea"/>
-<line x1="570" y1="311.331" x2="570" y2="311.231" stroke="#9333ea"/>
-<line x1="566" y1="311.331" x2="574" y2="311.331" stroke="#9333ea"/>
-<line x1="566" y1="311.231" x2="574" y2="311.231" stroke="#9333ea"/>
-<circle cx="570" cy="311.281" r="3.5" fill="#9333ea"/>
+<path d="M102.6,63.0931 L201,115.992 L324,228.674 L570,311.126" fill="none" stroke="#9333ea" stroke-width="2"/>
+<line x1="102.6" y1="63.2112" x2="102.6" y2="62.9751" stroke="#9333ea"/>
+<line x1="98.6" y1="63.2112" x2="106.6" y2="63.2112" stroke="#9333ea"/>
+<line x1="98.6" y1="62.9751" x2="106.6" y2="62.9751" stroke="#9333ea"/>
+<circle cx="102.6" cy="63.0931" r="3.5" fill="#9333ea"/>
+<line x1="201" y1="116.031" x2="201" y2="115.953" stroke="#9333ea"/>
+<line x1="197" y1="116.031" x2="205" y2="116.031" stroke="#9333ea"/>
+<line x1="197" y1="115.953" x2="205" y2="115.953" stroke="#9333ea"/>
+<circle cx="201" cy="115.992" r="3.5" fill="#9333ea"/>
+<line x1="324" y1="228.713" x2="324" y2="228.635" stroke="#9333ea"/>
+<line x1="320" y1="228.713" x2="328" y2="228.713" stroke="#9333ea"/>
+<line x1="320" y1="228.635" x2="328" y2="228.635" stroke="#9333ea"/>
+<circle cx="324" cy="228.674" r="3.5" fill="#9333ea"/>
+<circle cx="570" cy="311.126" r="3.5" fill="#9333ea"/>
 <line x1="584" y1="176" x2="608" y2="176" stroke="#9333ea" stroke-width="2"/>
 <text x="614" y="180" font-size="12">GBN N=16</text>
 <path d="M102.6,46 L201,46 L324,178.458 L570,286.064" fill="none" stroke="#9333ea" stroke-width="2" stroke-dasharray="6,4"/>

@@ -38,64 +38,64 @@
 <rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
 <text x="324" y="442" text-anchor="middle" font-size="13">Window size N</text>
 <text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Throughput (kbit/s)</text>
-<path d="M78,129.084 L242,139.55 L570,271.991" fill="none" stroke="#2563eb" stroke-width="2"/>
-<line x1="78" y1="148.125" x2="78" y2="110.042" stroke="#2563eb"/>
-<line x1="74" y1="148.125" x2="82" y2="148.125" stroke="#2563eb"/>
-<line x1="74" y1="110.042" x2="82" y2="110.042" stroke="#2563eb"/>
-<circle cx="78" cy="129.084" r="3.5" fill="#2563eb"/>
-<line x1="242" y1="195.598" x2="242" y2="83.5021" stroke="#2563eb"/>
-<line x1="238" y1="195.598" x2="246" y2="195.598" stroke="#2563eb"/>
-<line x1="238" y1="83.5021" x2="246" y2="83.5021" stroke="#2563eb"/>
-<circle cx="242" cy="139.55" r="3.5" fill="#2563eb"/>
-<line x1="570" y1="319.327" x2="570" y2="224.655" stroke="#2563eb"/>
-<line x1="566" y1="319.327" x2="574" y2="319.327" stroke="#2563eb"/>
-<line x1="566" y1="224.655" x2="574" y2="224.655" stroke="#2563eb"/>
-<circle cx="570" cy="271.991" r="3.5" fill="#2563eb"/>
+<path d="M78,128.309 L242,138.478 L570,267.741" fill="none" stroke="#2563eb" stroke-width="2"/>
+<line x1="78" y1="147.167" x2="78" y2="109.451" stroke="#2563eb"/>
+<line x1="74" y1="147.167" x2="82" y2="147.167" stroke="#2563eb"/>
+<line x1="74" y1="109.451" x2="82" y2="109.451" stroke="#2563eb"/>
+<circle cx="78" cy="128.309" r="3.5" fill="#2563eb"/>
+<line x1="242" y1="194.254" x2="242" y2="82.7028" stroke="#2563eb"/>
+<line x1="238" y1="194.254" x2="246" y2="194.254" stroke="#2563eb"/>
+<line x1="238" y1="82.7028" x2="246" y2="82.7028" stroke="#2563eb"/>
+<circle cx="242" cy="138.478" r="3.5" fill="#2563eb"/>
+<line x1="570" y1="320.849" x2="570" y2="214.634" stroke="#2563eb"/>
+<line x1="566" y1="320.849" x2="574" y2="320.849" stroke="#2563eb"/>
+<line x1="566" y1="214.634" x2="574" y2="214.634" stroke="#2563eb"/>
+<circle cx="570" cy="267.741" r="3.5" fill="#2563eb"/>
 <line x1="584" y1="56" x2="608" y2="56" stroke="#2563eb" stroke-width="2"/>
 <text x="614" y="60" font-size="12">RTT=10.0ms</text>
-<path d="M78,322.725 L242,296.209 L570,252.57" fill="none" stroke="#dc2626" stroke-width="2"/>
-<line x1="78" y1="328.725" x2="78" y2="316.725" stroke="#dc2626"/>
-<line x1="74" y1="328.725" x2="82" y2="328.725" stroke="#dc2626"/>
-<line x1="74" y1="316.725" x2="82" y2="316.725" stroke="#dc2626"/>
-<circle cx="78" cy="322.725" r="3.5" fill="#dc2626"/>
-<line x1="242" y1="333.82" x2="242" y2="258.599" stroke="#dc2626"/>
-<line x1="238" y1="333.82" x2="246" y2="333.82" stroke="#dc2626"/>
-<line x1="238" y1="258.599" x2="246" y2="258.599" stroke="#dc2626"/>
-<circle cx="242" cy="296.209" r="3.5" fill="#dc2626"/>
-<line x1="570" y1="310.835" x2="570" y2="194.305" stroke="#dc2626"/>
-<line x1="566" y1="310.835" x2="574" y2="310.835" stroke="#dc2626"/>
-<line x1="566" y1="194.305" x2="574" y2="194.305" stroke="#dc2626"/>
-<circle cx="570" cy="252.57" r="3.5" fill="#dc2626"/>
+<path d="M78,322.426 L242,295.764 L570,252.096" fill="none" stroke="#dc2626" stroke-width="2"/>
+<line x1="78" y1="328.508" x2="78" y2="316.344" stroke="#dc2626"/>
+<line x1="74" y1="328.508" x2="82" y2="328.508" stroke="#dc2626"/>
+<line x1="74" y1="316.344" x2="82" y2="316.344" stroke="#dc2626"/>
+<circle cx="78" cy="322.426" r="3.5" fill="#dc2626"/>
+<line x1="242" y1="333.536" x2="242" y2="257.993" stroke="#dc2626"/>
+<line x1="238" y1="333.536" x2="246" y2="333.536" stroke="#dc2626"/>
+<line x1="238" y1="257.993" x2="246" y2="257.993" stroke="#dc2626"/>
+<circle cx="242" cy="295.764" r="3.5" fill="#dc2626"/>
+<line x1="570" y1="310.355" x2="570" y2="193.837" stroke="#dc2626"/>
+<line x1="566" y1="310.355" x2="574" y2="310.355" stroke="#dc2626"/>
+<line x1="566" y1="193.837" x2="574" y2="193.837" stroke="#dc2626"/>
+<circle cx="570" cy="252.096" r="3.5" fill="#dc2626"/>
 <line x1="584" y1="76" x2="608" y2="76" stroke="#dc2626" stroke-width="2"/>
 <text x="614" y="80" font-size="12">RTT=50.0ms</text>
-<path d="M78,358.87 L242,344.215 L570,315.135" fill="none" stroke="#16a34a" stroke-width="2"/>
-<line x1="78" y1="362.052" x2="78" y2="355.688" stroke="#16a34a"/>
-<line x1="74" y1="362.052" x2="82" y2="362.052" stroke="#16a34a"/>
-<line x1="74" y1="355.688" x2="82" y2="355.688" stroke="#16a34a"/>
-<circle cx="78" cy="358.87" r="3.5" fill="#16a34a"/>
-<line x1="242" y1="363.472" x2="242" y2="324.958" stroke="#16a34a"/>
-<line x1="238" y1="363.472" x2="246" y2="363.472" stroke="#16a34a"/>
-<line x1="238" y1="324.958" x2="246" y2="324.958" stroke="#16a34a"/>
-<circle cx="242" cy="344.215" r="3.5" fill="#16a34a"/>
-<line x1="570" y1="349.633" x2="570" y2="280.636" stroke="#16a34a"/>
-<line x1="566" y1="349.633" x2="574" y2="349.633" stroke="#16a34a"/>
-<line x1="566" y1="280.636" x2="574" y2="280.636" stroke="#16a34a"/>
-<circle cx="570" cy="315.135" r="3.5" fill="#16a34a"/>
+<path d="M78,358.738 L242,344.082 L570,315.001" fill="none" stroke="#16a34a" stroke-width="2"/>
+<line x1="78" y1="361.944" x2="78" y2="355.531" stroke="#16a34a"/>
+<line x1="74" y1="361.944" x2="82" y2="361.944" stroke="#16a34a"/>
+<line x1="74" y1="355.531" x2="82" y2="355.531" stroke="#16a34a"/>
+<circle cx="78" cy="358.738" r="3.5" fill="#16a34a"/>
+<line x1="242" y1="363.412" x2="242" y2="324.753" stroke="#16a34a"/>
+<line x1="238" y1="363.412" x2="246" y2="363.412" stroke="#16a34a"/>
+<line x1="238" y1="324.753" x2="246" y2="324.753" stroke="#16a34a"/>
+<circle cx="242" cy="344.082" r="3.5" fill="#16a34a"/>
+<line x1="570" y1="349.586" x2="570" y2="280.417" stroke="#16a34a"/>
+<line x1="566" y1="349.586" x2="574" y2="349.586" stroke="#16a34a"/>
+<line x1="566" y1="280.417" x2="574" y2="280.417" stroke="#16a34a"/>
+<circle cx="570" cy="315.001" r="3.5" fill="#16a34a"/>
 <line x1="584" y1="96" x2="608" y2="96" stroke="#16a34a" stroke-width="2"/>
 <text x="614" y="100" font-size="12">RTT=100.0ms</text>
-<path d="M78,378.008 L242,370.286 L570,354.404" fill="none" stroke="#9333ea" stroke-width="2"/>
-<line x1="78" y1="379.635" x2="78" y2="376.381" stroke="#9333ea"/>
-<line x1="74" y1="379.635" x2="82" y2="379.635" stroke="#9333ea"/>
-<line x1="74" y1="376.381" x2="82" y2="376.381" stroke="#9333ea"/>
-<circle cx="78" cy="378.008" r="3.5" fill="#9333ea"/>
-<line x1="242" y1="380.067" x2="242" y2="360.504" stroke="#9333ea"/>
-<line x1="238" y1="380.067" x2="246" y2="380.067" stroke="#9333ea"/>
-<line x1="238" y1="360.504" x2="246" y2="360.504" stroke="#9333ea"/>
-<circle cx="242" cy="370.286" r="3.5" fill="#9333ea"/>
-<line x1="570" y1="372.573" x2="570" y2="336.235" stroke="#9333ea"/>
-<line x1="566" y1="372.573" x2="574" y2="372.573" stroke="#9333ea"/>
-<line x1="566" y1="336.235" x2="574" y2="336.235" stroke="#9333ea"/>
-<circle cx="570" cy="354.404" r="3.5" fill="#9333ea"/>
+<path d="M78,377.97 L242,370.257 L570,354.355" fill="none" stroke="#9333ea" stroke-width="2"/>
+<line x1="78" y1="379.61" x2="78" y2="376.331" stroke="#9333ea"/>
+<line x1="74" y1="379.61" x2="82" y2="379.61" stroke="#9333ea"/>
+<line x1="74" y1="376.331" x2="82" y2="376.331" stroke="#9333ea"/>
+<circle cx="78" cy="377.97" r="3.5" fill="#9333ea"/>
+<line x1="242" y1="380.053" x2="242" y2="360.461" stroke="#9333ea"/>
+<line x1="238" y1="380.053" x2="246" y2="380.053" stroke="#9333ea"/>
+<line x1="238" y1="360.461" x2="246" y2="360.461" stroke="#9333ea"/>
+<circle cx="242" cy="370.257" r="3.5" fill="#9333ea"/>
+<line x1="570" y1="372.533" x2="570" y2="336.177" stroke="#9333ea"/>
+<line x1="566" y1="372.533" x2="574" y2="372.533" stroke="#9333ea"/>
+<line x1="566" y1="336.177" x2="574" y2="336.177" stroke="#9333ea"/>
+<circle cx="570" cy="354.355" r="3.5" fill="#9333ea"/>
 <line x1="584" y1="116" x2="608" y2="116" stroke="#9333ea" stroke-width="2"/>
 <text x="614" y="120" font-size="12">RTT=200.0ms</text>
 </svg>
