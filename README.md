@@ -106,6 +106,18 @@ Each sweep writes:
 
 The results committed in [`results/`](results/) and discussed in [`docs/RESULTS.md`](docs/RESULTS.md) were produced with exactly these commands.
 
+## Key findings (1 030 runs, details in [`docs/RESULTS.md`](docs/RESULTS.md))
+
+* **Theory is reproduced.** Measured Stop-and-Wait utilisation is within 3 % of `L/R / (RTT + L/R)`.
+  GBN saturates once `N·L/R ≥ RTT + L/R`, and the remaining gap is explained by the finite file.
+* **Window vs loss.** At RTT 200 ms, GBN (N=16) is 12.5× faster than SW. Under 20 % loss, though, it sends 3.3 copies of every packet.
+* **Selective Repeat** retransmits 4.5× less than GBN and gives up to +32 % throughput under loss.
+* **A fixed RTO of 2×RTT breaks when queueing (`N·L/R`) exceeds the RTT.** The adaptive RFC 6298 RTO removes 93 % of the retransmissions there, which is 3.5× the throughput for SR.
+* **NAKs** speed up GBN by up to 71 % but barely help SR.
+* **Burst loss** cuts SW throughput by up to 83 %, yet *doubles* GBN throughput at the same average loss rate.
+* **Modulation.** Every scheme has a ~3 dB SNR cliff below which ARQ cannot deliver at all. AMC tracks the best scheme from BPSK (939 kbit/s) up to 64-QAM (4 530 kbit/s).
+* **Integrity.** Every completed transfer was bit-exact: 0 corrupted files out of 935 completed runs. The 95 aborted runs are all modulation/SNR pairs below the cliff.
+
 ## Documentation
 
 * [`docs/DESIGN.md`](docs/DESIGN.md): architecture, packet format, channel/PHY model, protocol rules, metric definitions
