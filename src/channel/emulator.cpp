@@ -4,6 +4,7 @@
 #include <cmath>
 #include <queue>
 #include <random>
+#include <thread>
 #include <vector>
 
 #include "core/clock.hpp"
@@ -18,6 +19,8 @@ Modulation ChannelConfig::effectiveModulation(std::size_t frameBytes) const {
 }
 
 namespace {
+
+constexpr double kSpinWindowMs = 16.0;
 
 struct Pending {
     TimePoint deliverAt;
@@ -95,13 +98,20 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
             queue.pop();
         }
 
+        // select() timeouts are only accurate to the OS tick (up to ~15.6 ms on
+        // Windows), which would add random delay to every packet. Sleep in
+        // select() only while the next delivery is far away, then poll and
+        // spin for the final stretch so deliveries happen within ~0.1 ms.
         int waitMs = 20;
         if (!queue.empty()) {
             double untilNext = msBetween(Clock::now(), queue.top().deliverAt);
-            waitMs = std::max(0, std::min(waitMs, int(std::floor(untilNext))));
+            waitMs = untilNext > kSpinWindowMs ? std::min(waitMs, int(untilNext - kSpinWindowMs)) : 0;
         }
         int idx = UdpSocket::waitAny(socks, 2, waitMs);
-        if (idx < 0) continue;
+        if (idx < 0) {
+            if (waitMs == 0) std::this_thread::yield();
+            continue;
+        }
 
         bool isData = (idx == 0);
         if (!socks[idx]->receive(buf, 0)) continue;
