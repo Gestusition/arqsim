@@ -84,7 +84,7 @@ OS tick (≈15.6 ms) which would otherwise add random delay to every packet.
 |-|-|-|-|
 | Window | 1 | N | N (sender and receiver) |
 | ACK | cumulative (next expected) | cumulative | individual |
-| Timer | one | one, on oldest unACKed (restarted on every new ACK) | one per packet |
+| Timer | one | one, on oldest unACKed (restarted on every new ACK) | one per packet, runs from max(send time, last base advance) |
 | On timeout | resend the packet | resend all outstanding from base | resend that packet only |
 | On NAK (`--nak`) | resend | go back from base (once per base) | resend that packet |
 | Receiver buffer | none | none (out-of-order discarded) | out-of-order buffered |
@@ -96,12 +96,22 @@ OS tick (≈15.6 ms) which would otherwise add random delay to every packet.
   `RTTVAR = RTT/2`, so the initial RTO is 3·RTT, as Linux reuses tcp_metrics)
   instead of the 1 s cold start that would dominate 50-packet transfers; `SRTT`, `RTTVAR`,
   `RTO = SRTT + max(G, 4·RTTVAR)` with `G = 5 ms`, Karn's algorithm and
-  exponential back-off.
+  exponential back-off. The back-off is cleared when new data is acknowledged
+  (as Linux does); otherwise Karn's rule starves GBN of samples after a go-back.
 
-Observation built into the design: a fixed `2×RTT` RTO ignores queueing
-delay `N·L/R`. When `N·L/R ≳ RTT`, SR's per-packet timers (started when the
-packet is handed to the link) fire spuriously; GBN is less affected because it
-restarts its single timer on every new ACK. The `rto` preset quantifies this.
+### Selective Repeat timers
+
+A textbook SR timer starts when the packet is handed to the link. On a slow
+link, though, the packet may wait `N·L/R` in the queue (130 ms for BPSK with
+N = 16), far longer than the RTT, and it would then time out before it was even
+transmitted. arqsim therefore runs each logical timer from
+`max(send time, last time the window base advanced)`. This is the RFC 6298
+§5.3 rule ("restart the timer when new data is acknowledged"), applied to every
+packet. A packet that is really lost still times out one RTO after it reaches
+the head of the window.
+
+A fixed `2×RTT` RTO still ignores queueing: when `N·L/R ≳ RTT`, it fires
+before an ACK can possibly arrive. The `rto` preset quantifies this.
 
 ## Metrics
 
