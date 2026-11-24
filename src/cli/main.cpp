@@ -277,14 +277,18 @@ int cmdReport(const Args& a) {
     const std::string in = a.positional()[0];
     fs::path dir = a.str("out", fs::path(in).parent_path().string());
     if (dir.empty()) dir = ".";
+    const std::string presetName = a.str("preset", "");
     warnUnused(a);
+    const Preset* preset = presetName.empty() ? nullptr : findPreset(presetName);
+    if (!presetName.empty() && !preset) throw std::runtime_error("unknown preset '" + presetName + "'");
     fs::create_directories(dir);
     Table raw = Table::readCsv(in);
     Table summary = raw.aggregate(configColumns(), metricColumns());
     summary.writeCsv((dir / "summary.csv").string());
     printSummary(summary);
     std::printf("\n  summary %s\n", (dir / "summary.csv").string().c_str());
-    writeFigures(summary, autoFigures(summary), dir);
+    // --preset NAME redraws that preset's figure set; otherwise one chart per varying axis.
+    writeFigures(summary, preset && !preset->figures.empty() ? preset->figures : autoFigures(summary), dir);
     return 0;
 }
 

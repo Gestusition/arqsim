@@ -126,7 +126,8 @@ std::string LineChart::toSvg(int W, int H) const {
     // series
     for (std::size_t i = 0; i < series.size(); ++i) {
         const auto& s = series[i];
-        const char* color = kPalette[i % (sizeof(kPalette) / sizeof(kPalette[0]))];
+        const std::size_t ci = s.color >= 0 ? std::size_t(s.color) : i;
+        const char* color = kPalette[ci % (sizeof(kPalette) / sizeof(kPalette[0]))];
         std::vector<ChartPoint> pts = s.points;
         std::sort(pts.begin(), pts.end(), [](const ChartPoint& a, const ChartPoint& b) { return a.x < b.x; });
         std::ostringstream path;

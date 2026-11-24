@@ -16,6 +16,7 @@ struct ChartSeries {
     std::string name;
     std::vector<ChartPoint> points;
     bool dashed = false;
+    int color = -1;  // palette index; -1 = use the series position
 };
 
 struct LineChart {

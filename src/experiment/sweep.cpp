@@ -124,9 +124,15 @@ LineChart buildFigure(const Table& summary, const FigureSpec& f) {
             ov.points.push_back({sub.num(r, f.x), sub.num(r, f.overlay + "_mean"), 0.0});
         }
     }
+    int color = 0;
     for (const auto& n : order) {
+        byName[n].color = color;
         chart.series.push_back(byName[n]);
-        if (!f.overlay.empty()) chart.series.push_back(overlays[n]);
+        if (!f.overlay.empty()) {
+            overlays[n].color = color;  // theory curve shares its measurement's colour
+            chart.series.push_back(overlays[n]);
+        }
+        ++color;
     }
     return chart;
 }
