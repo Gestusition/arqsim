@@ -118,6 +118,15 @@ private:
 // ---------------------------------------------------------------------------
 // Selective Repeat: window of N, individual ACKs, one logical timer per
 // packet, only the timed-out (or NAKed) packet is retransmitted.
+//
+// Timer rule: a packet's timer runs from max(time it was (re)sent, time the
+// window base last advanced). Following RFC 6298 (5.3), the timers are
+// re-armed whenever new data is acknowledged in order. Without this, a
+// packet that waits in the link queue behind N-1 others (queueing N*L/R can
+// far exceed the RTT on a slow link) would time out before it has even left
+// the sender's interface. A truly lost packet still times out one RTO after
+// it reaches the head of the window, i.e. after the ACK that should have
+// followed its predecessor's.
 // ---------------------------------------------------------------------------
 class SelectiveRepeatSender : public ArqSender {
 public:
@@ -127,22 +136,24 @@ protected:
     void fillWindow(TimePoint now) override {
         if (acked_.size() != total()) {
             acked_.assign(total(), false);
-            deadline_.assign(total(), kNever);
+            armedAt_.assign(total(), TimePoint{});
+            baseAdvancedAt_ = now;
         }
         const std::uint32_t n = std::uint32_t(cfg_.effectiveWindow());
         while (nextSeq_ < base_ + n && nextSeq_ < total()) {
             sendData(nextSeq_, false, now);
-            deadline_[nextSeq_] = afterMs(now, rto_.rtoMs());
+            armedAt_[nextSeq_] = now;
             ++nextSeq_;
         }
     }
     void onAck(std::uint32_t seq, TimePoint now) override {
         if (seq >= base_ && seq < nextSeq_ && !acked_[seq]) {
             acked_[seq] = true;
-            deadline_[seq] = kNever;
             sampleRtt(seq, now);
             rto_.onProgress();
+            const std::uint32_t oldBase = base_;
             while (base_ < total() && acked_[base_]) ++base_;
+            if (base_ != oldBase) baseAdvancedAt_ = now;
         }
     }
     void onNak(std::uint32_t seq, TimePoint now) override {
@@ -150,26 +161,29 @@ protected:
             // Avoid NAK storms: ignore if this packet was (re)sent very recently.
             if (msBetween(sentAt_[seq], now) < 0.5 * rto_.rtoMs()) return;
             sendData(seq, true, now);
-            deadline_[seq] = afterMs(now, rto_.rtoMs());
+            armedAt_[seq] = now;
         }
+    }
+    TimePoint deadline(std::uint32_t s) const {
+        return afterMs(std::max(armedAt_[s], baseAdvancedAt_), rto_.rtoMs());
     }
     TimePoint nextDeadline() const override {
         TimePoint d = kNever;
         for (std::uint32_t s = base_; s < nextSeq_; ++s)
-            if (!acked_[s]) d = std::min(d, deadline_[s]);
+            if (!acked_[s]) d = std::min(d, deadline(s));
         return d;
     }
     void onTimers(TimePoint now) override {
-        bool any = false;
-        for (std::uint32_t s = base_; s < nextSeq_; ++s) {
-            if (!acked_[s] && now >= deadline_[s]) {
-                if (!any) rto_.onTimeout();  // back off once per timer event
-                any = true;
-                ++stats_.timeouts;
-                ARQ_TRACE("SEND", "timeout seq=%u, rto=%.1f ms", s, rto_.rtoMs());
-                sendData(s, true, now);
-                deadline_[s] = afterMs(now, rto_.rtoMs());
-            }
+        std::vector<std::uint32_t> expired;
+        for (std::uint32_t s = base_; s < nextSeq_; ++s)
+            if (!acked_[s] && now >= deadline(s)) expired.push_back(s);
+        if (expired.empty()) return;
+        rto_.onTimeout();  // back off once per timer event
+        for (std::uint32_t s : expired) {
+            ++stats_.timeouts;
+            ARQ_TRACE("SEND", "timeout seq=%u, rto=%.1f ms", s, rto_.rtoMs());
+            sendData(s, true, now);
+            armedAt_[s] = now;
         }
     }
     bool allAcked() const override { return base_ >= total(); }
@@ -179,7 +193,8 @@ private:
     std::uint32_t base_ = 0;
     std::uint32_t nextSeq_ = 0;
     std::vector<bool> acked_;
-    std::vector<TimePoint> deadline_;
+    std::vector<TimePoint> armedAt_;
+    TimePoint baseAdvancedAt_{};
 };
 
 }  // namespace
