@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380" y="26" text-anchor="middle" font-size="16" font-weight="bold">Retransmissions vs loss (RTT = 50 ms)</text>
+<line x1="78" y1="398" x2="570" y2="398" stroke="#e5e7eb"/>
+<text x="70" y="402" text-anchor="end" font-size="11">-50</text>
+<line x1="78" y1="339.333" x2="570" y2="339.333" stroke="#e5e7eb"/>
+<text x="70" y="343.333" text-anchor="end" font-size="11">0</text>
+<line x1="78" y1="280.667" x2="570" y2="280.667" stroke="#e5e7eb"/>
+<text x="70" y="284.667" text-anchor="end" font-size="11">50</text>
+<line x1="78" y1="222" x2="570" y2="222" stroke="#e5e7eb"/>
+<text x="70" y="226" text-anchor="end" font-size="11">100</text>
+<line x1="78" y1="163.333" x2="570" y2="163.333" stroke="#e5e7eb"/>
+<text x="70" y="167.333" text-anchor="end" font-size="11">150</text>
+<line x1="78" y1="104.667" x2="570" y2="104.667" stroke="#e5e7eb"/>
+<text x="70" y="108.667" text-anchor="end" font-size="11">200</text>
+<line x1="78" y1="46" x2="570" y2="46" stroke="#e5e7eb"/>
+<text x="70" y="50" text-anchor="end" font-size="11">250</text>
+<line x1="78" y1="46" x2="78" y2="398" stroke="#f1f5f9"/>
+<text x="78" y="416" text-anchor="middle" font-size="11">0</text>
+<line x1="127.2" y1="46" x2="127.2" y2="398" stroke="#f1f5f9"/>
+<text x="127.2" y="416" text-anchor="middle" font-size="11">0.02</text>
+<line x1="176.4" y1="46" x2="176.4" y2="398" stroke="#f1f5f9"/>
+<text x="176.4" y="416" text-anchor="middle" font-size="11">0.04</text>
+<line x1="225.6" y1="46" x2="225.6" y2="398" stroke="#f1f5f9"/>
+<text x="225.6" y="416" text-anchor="middle" font-size="11">0.06</text>
+<line x1="274.8" y1="46" x2="274.8" y2="398" stroke="#f1f5f9"/>
+<text x="274.8" y="416" text-anchor="middle" font-size="11">0.08</text>
+<line x1="324" y1="46" x2="324" y2="398" stroke="#f1f5f9"/>
+<text x="324" y="416" text-anchor="middle" font-size="11">0.1</text>
+<line x1="373.2" y1="46" x2="373.2" y2="398" stroke="#f1f5f9"/>
+<text x="373.2" y="416" text-anchor="middle" font-size="11">0.12</text>
+<line x1="422.4" y1="46" x2="422.4" y2="398" stroke="#f1f5f9"/>
+<text x="422.4" y="416" text-anchor="middle" font-size="11">0.14</text>
+<line x1="471.6" y1="46" x2="471.6" y2="398" stroke="#f1f5f9"/>
+<text x="471.6" y="416" text-anchor="middle" font-size="11">0.16</text>
+<line x1="520.8" y1="46" x2="520.8" y2="398" stroke="#f1f5f9"/>
+<text x="520.8" y="416" text-anchor="middle" font-size="11">0.18</text>
+<line x1="570" y1="46" x2="570" y2="398" stroke="#f1f5f9"/>
+<text x="570" y="416" text-anchor="middle" font-size="11">0.2</text>
+<rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
+<text x="324" y="442" text-anchor="middle" font-size="13">DATA/ACK loss probability</text>
+<text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Retransmitted DATA packets</text>
+<path d="M78,339.333 L102.6,337.456 L201,332.997 L324,324.784 L570,304.368" fill="none" stroke="#2563eb" stroke-width="2"/>
+<circle cx="78" cy="339.333" r="3.5" fill="#2563eb"/>
+<line x1="102.6" y1="338.759" x2="102.6" y2="336.153" stroke="#2563eb"/>
+<line x1="98.6" y1="338.759" x2="106.6" y2="338.759" stroke="#2563eb"/>
+<line x1="98.6" y1="336.153" x2="106.6" y2="336.153" stroke="#2563eb"/>
+<circle cx="102.6" cy="337.456" r="3.5" fill="#2563eb"/>
+<line x1="201" y1="336.505" x2="201" y2="329.489" stroke="#2563eb"/>
+<line x1="197" y1="336.505" x2="205" y2="336.505" stroke="#2563eb"/>
+<line x1="197" y1="329.489" x2="205" y2="329.489" stroke="#2563eb"/>
+<circle cx="201" cy="332.997" r="3.5" fill="#2563eb"/>
+<line x1="324" y1="331.739" x2="324" y2="317.829" stroke="#2563eb"/>
+<line x1="320" y1="331.739" x2="328" y2="331.739" stroke="#2563eb"/>
+<line x1="320" y1="317.829" x2="328" y2="317.829" stroke="#2563eb"/>
+<circle cx="324" cy="324.784" r="3.5" fill="#2563eb"/>
+<line x1="570" y1="315.623" x2="570" y2="293.113" stroke="#2563eb"/>
+<line x1="566" y1="315.623" x2="574" y2="315.623" stroke="#2563eb"/>
+<line x1="566" y1="293.113" x2="574" y2="293.113" stroke="#2563eb"/>
+<circle cx="570" cy="304.368" r="3.5" fill="#2563eb"/>
+<line x1="584" y1="56" x2="608" y2="56" stroke="#2563eb" stroke-width="2"/>
+<text x="614" y="60" font-size="12">SW</text>
+<path d="M78,339.333 L102.6,336.517 L201,329.008 L324,310.704 L570,274.331" fill="none" stroke="#dc2626" stroke-width="2"/>
+<circle cx="78" cy="339.333" r="3.5" fill="#dc2626"/>
+<line x1="102.6" y1="341.729" x2="102.6" y2="331.306" stroke="#dc2626"/>
+<line x1="98.6" y1="341.729" x2="106.6" y2="341.729" stroke="#dc2626"/>
+<line x1="98.6" y1="331.306" x2="106.6" y2="331.306" stroke="#dc2626"/>
+<circle cx="102.6" cy="336.517" r="3.5" fill="#dc2626"/>
+<line x1="201" y1="333.05" x2="201" y2="324.966" stroke="#dc2626"/>
+<line x1="197" y1="333.05" x2="205" y2="333.05" stroke="#dc2626"/>
+<line x1="197" y1="324.966" x2="205" y2="324.966" stroke="#dc2626"/>
+<circle cx="201" cy="329.008" r="3.5" fill="#dc2626"/>
+<line x1="324" y1="321.289" x2="324" y2="300.119" stroke="#dc2626"/>
+<line x1="320" y1="321.289" x2="328" y2="321.289" stroke="#dc2626"/>
+<line x1="320" y1="300.119" x2="328" y2="300.119" stroke="#dc2626"/>
+<circle cx="324" cy="310.704" r="3.5" fill="#dc2626"/>
+<line x1="570" y1="289.594" x2="570" y2="259.067" stroke="#dc2626"/>
+<line x1="566" y1="289.594" x2="574" y2="289.594" stroke="#dc2626"/>
+<line x1="566" y1="259.067" x2="574" y2="259.067" stroke="#dc2626"/>
+<circle cx="570" cy="274.331" r="3.5" fill="#dc2626"/>
+<line x1="584" y1="76" x2="608" y2="76" stroke="#dc2626" stroke-width="2"/>
+<text x="614" y="80" font-size="12">GBN N=4</text>
+<path d="M78,339.333 L102.6,332.997 L201,313.755 L324,273.861 L570,220.592" fill="none" stroke="#16a34a" stroke-width="2"/>
+<circle cx="78" cy="339.333" r="3.5" fill="#16a34a"/>
+<line x1="102.6" y1="344.072" x2="102.6" y2="321.923" stroke="#16a34a"/>
+<line x1="98.6" y1="344.072" x2="106.6" y2="344.072" stroke="#16a34a"/>
+<line x1="98.6" y1="321.923" x2="106.6" y2="321.923" stroke="#16a34a"/>
+<circle cx="102.6" cy="332.997" r="3.5" fill="#16a34a"/>
+<line x1="201" y1="329.115" x2="201" y2="298.394" stroke="#16a34a"/>
+<line x1="197" y1="329.115" x2="205" y2="329.115" stroke="#16a34a"/>
+<line x1="197" y1="298.394" x2="205" y2="298.394" stroke="#16a34a"/>
+<circle cx="201" cy="313.755" r="3.5" fill="#16a34a"/>
+<line x1="324" y1="290.16" x2="324" y2="257.562" stroke="#16a34a"/>
+<line x1="320" y1="290.16" x2="328" y2="290.16" stroke="#16a34a"/>
+<line x1="320" y1="257.562" x2="328" y2="257.562" stroke="#16a34a"/>
+<circle cx="324" cy="273.861" r="3.5" fill="#16a34a"/>
+<line x1="570" y1="253.543" x2="570" y2="187.641" stroke="#16a34a"/>
+<line x1="566" y1="253.543" x2="574" y2="253.543" stroke="#16a34a"/>
+<line x1="566" y1="187.641" x2="574" y2="187.641" stroke="#16a34a"/>
+<circle cx="570" cy="220.592" r="3.5" fill="#16a34a"/>
+<line x1="584" y1="96" x2="608" y2="96" stroke="#16a34a" stroke-width="2"/>
+<text x="614" y="100" font-size="12">GBN N=8</text>
+<path d="M78,339.333 L102.6,328.069 L201,305.776 L324,232.795 L570,145.968" fill="none" stroke="#9333ea" stroke-width="2"/>
+<circle cx="78" cy="339.333" r="3.5" fill="#9333ea"/>
+<line x1="102.6" y1="348.915" x2="102.6" y2="307.223" stroke="#9333ea"/>
+<line x1="98.6" y1="348.915" x2="106.6" y2="348.915" stroke="#9333ea"/>
+<line x1="98.6" y1="307.223" x2="106.6" y2="307.223" stroke="#9333ea"/>
+<circle cx="102.6" cy="328.069" r="3.5" fill="#9333ea"/>
+<line x1="201" y1="329.073" x2="201" y2="282.479" stroke="#9333ea"/>
+<line x1="197" y1="329.073" x2="205" y2="329.073" stroke="#9333ea"/>
+<line x1="197" y1="282.479" x2="205" y2="282.479" stroke="#9333ea"/>
+<circle cx="201" cy="305.776" r="3.5" fill="#9333ea"/>
+<line x1="324" y1="289.822" x2="324" y2="175.767" stroke="#9333ea"/>
+<line x1="320" y1="289.822" x2="328" y2="289.822" stroke="#9333ea"/>
+<line x1="320" y1="175.767" x2="328" y2="175.767" stroke="#9333ea"/>
+<circle cx="324" cy="232.795" r="3.5" fill="#9333ea"/>
+<line x1="570" y1="223.837" x2="570" y2="68.099" stroke="#9333ea"/>
+<line x1="566" y1="223.837" x2="574" y2="223.837" stroke="#9333ea"/>
+<line x1="566" y1="68.099" x2="574" y2="68.099" stroke="#9333ea"/>
+<circle cx="570" cy="145.968" r="3.5" fill="#9333ea"/>
+<line x1="584" y1="116" x2="608" y2="116" stroke="#9333ea" stroke-width="2"/>
+<text x="614" y="120" font-size="12">GBN N=16</text>
+</svg>
