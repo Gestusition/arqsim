@@ -1,0 +1,158 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380" y="26" text-anchor="middle" font-size="16" font-weight="bold">Measured channel BER vs SNR</text>
+<line x1="78" y1="398" x2="570" y2="398" stroke="#e5e7eb"/>
+<text x="70" y="402" text-anchor="end" font-size="11">1e-07</text>
+<line x1="78" y1="347.714" x2="570" y2="347.714" stroke="#e5e7eb"/>
+<text x="70" y="351.714" text-anchor="end" font-size="11">1e-06</text>
+<line x1="78" y1="297.429" x2="570" y2="297.429" stroke="#e5e7eb"/>
+<text x="70" y="301.429" text-anchor="end" font-size="11">1e-05</text>
+<line x1="78" y1="247.143" x2="570" y2="247.143" stroke="#e5e7eb"/>
+<text x="70" y="251.143" text-anchor="end" font-size="11">1e-04</text>
+<line x1="78" y1="196.857" x2="570" y2="196.857" stroke="#e5e7eb"/>
+<text x="70" y="200.857" text-anchor="end" font-size="11">0.001</text>
+<line x1="78" y1="146.571" x2="570" y2="146.571" stroke="#e5e7eb"/>
+<text x="70" y="150.571" text-anchor="end" font-size="11">0.01</text>
+<line x1="78" y1="96.2857" x2="570" y2="96.2857" stroke="#e5e7eb"/>
+<text x="70" y="100.286" text-anchor="end" font-size="11">0.1</text>
+<line x1="78" y1="46" x2="570" y2="46" stroke="#e5e7eb"/>
+<text x="70" y="50" text-anchor="end" font-size="11">1</text>
+<line x1="78" y1="46" x2="78" y2="398" stroke="#f1f5f9"/>
+<text x="78" y="416" text-anchor="middle" font-size="11">6</text>
+<line x1="122.727" y1="46" x2="122.727" y2="398" stroke="#f1f5f9"/>
+<text x="122.727" y="416" text-anchor="middle" font-size="11">8</text>
+<line x1="167.455" y1="46" x2="167.455" y2="398" stroke="#f1f5f9"/>
+<text x="167.455" y="416" text-anchor="middle" font-size="11">10</text>
+<line x1="212.182" y1="46" x2="212.182" y2="398" stroke="#f1f5f9"/>
+<text x="212.182" y="416" text-anchor="middle" font-size="11">12</text>
+<line x1="256.909" y1="46" x2="256.909" y2="398" stroke="#f1f5f9"/>
+<text x="256.909" y="416" text-anchor="middle" font-size="11">14</text>
+<line x1="301.636" y1="46" x2="301.636" y2="398" stroke="#f1f5f9"/>
+<text x="301.636" y="416" text-anchor="middle" font-size="11">16</text>
+<line x1="346.364" y1="46" x2="346.364" y2="398" stroke="#f1f5f9"/>
+<text x="346.364" y="416" text-anchor="middle" font-size="11">18</text>
+<line x1="391.091" y1="46" x2="391.091" y2="398" stroke="#f1f5f9"/>
+<text x="391.091" y="416" text-anchor="middle" font-size="11">20</text>
+<line x1="435.818" y1="46" x2="435.818" y2="398" stroke="#f1f5f9"/>
+<text x="435.818" y="416" text-anchor="middle" font-size="11">22</text>
+<line x1="480.545" y1="46" x2="480.545" y2="398" stroke="#f1f5f9"/>
+<text x="480.545" y="416" text-anchor="middle" font-size="11">24</text>
+<line x1="525.273" y1="46" x2="525.273" y2="398" stroke="#f1f5f9"/>
+<text x="525.273" y="416" text-anchor="middle" font-size="11">26</text>
+<line x1="570" y1="46" x2="570" y2="398" stroke="#f1f5f9"/>
+<text x="570" y="416" text-anchor="middle" font-size="11">28</text>
+<rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
+<text x="324" y="442" text-anchor="middle" font-size="13">SNR Es/N0 (dB)</text>
+<text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Bit error rate</text>
+<path d="M78,177.753 L145.091,270.955" fill="none" stroke="#2563eb" stroke-width="2"/>
+<line x1="78" y1="178.955" x2="78" y2="176.613" stroke="#2563eb"/>
+<line x1="74" y1="178.955" x2="82" y2="178.955" stroke="#2563eb"/>
+<line x1="74" y1="176.613" x2="82" y2="176.613" stroke="#2563eb"/>
+<circle cx="78" cy="177.753" r="3.5" fill="#2563eb"/>
+<line x1="145.091" y1="278.195" x2="145.091" y2="265.527" stroke="#2563eb"/>
+<line x1="141.091" y1="278.195" x2="149.091" y2="278.195" stroke="#2563eb"/>
+<line x1="141.091" y1="265.527" x2="149.091" y2="265.527" stroke="#2563eb"/>
+<circle cx="145.091" cy="270.955" r="3.5" fill="#2563eb"/>
+<line x1="584" y1="56" x2="608" y2="56" stroke="#2563eb" stroke-width="2"/>
+<text x="614" y="60" font-size="12">BPSK</text>
+<path d="M78,128.393 L145.091,177.523 L212.182,270.256" fill="none" stroke="#dc2626" stroke-width="2"/>
+<line x1="78" y1="128.703" x2="78" y2="128.087" stroke="#dc2626"/>
+<line x1="74" y1="128.703" x2="82" y2="128.703" stroke="#dc2626"/>
+<line x1="74" y1="128.087" x2="82" y2="128.087" stroke="#dc2626"/>
+<circle cx="78" cy="128.393" r="3.5" fill="#dc2626"/>
+<line x1="145.091" y1="178.845" x2="145.091" y2="176.276" stroke="#dc2626"/>
+<line x1="141.091" y1="178.845" x2="149.091" y2="178.845" stroke="#dc2626"/>
+<line x1="141.091" y1="176.276" x2="149.091" y2="176.276" stroke="#dc2626"/>
+<circle cx="145.091" cy="177.523" r="3.5" fill="#dc2626"/>
+<line x1="212.182" y1="274.838" x2="212.182" y2="266.47" stroke="#dc2626"/>
+<line x1="208.182" y1="274.838" x2="216.182" y2="274.838" stroke="#dc2626"/>
+<line x1="208.182" y1="266.47" x2="216.182" y2="266.47" stroke="#dc2626"/>
+<circle cx="212.182" cy="270.256" r="3.5" fill="#dc2626"/>
+<line x1="584" y1="76" x2="608" y2="76" stroke="#dc2626" stroke-width="2"/>
+<text x="614" y="80" font-size="12">QPSK</text>
+<path d="M78,88.7995 L145.091,101.8 L212.182,124.121 L279.273,164.496 L346.364,239.881 L413.455,358.39" fill="none" stroke="#16a34a" stroke-width="2"/>
+<line x1="78" y1="88.9756" x2="78" y2="88.6247" stroke="#16a34a"/>
+<line x1="74" y1="88.9756" x2="82" y2="88.9756" stroke="#16a34a"/>
+<line x1="74" y1="88.6247" x2="82" y2="88.6247" stroke="#16a34a"/>
+<circle cx="78" cy="88.7995" r="3.5" fill="#16a34a"/>
+<line x1="145.091" y1="101.939" x2="145.091" y2="101.661" stroke="#16a34a"/>
+<line x1="141.091" y1="101.939" x2="149.091" y2="101.939" stroke="#16a34a"/>
+<line x1="141.091" y1="101.661" x2="149.091" y2="101.661" stroke="#16a34a"/>
+<circle cx="145.091" cy="101.8" r="3.5" fill="#16a34a"/>
+<line x1="212.182" y1="124.469" x2="212.182" y2="123.779" stroke="#16a34a"/>
+<line x1="208.182" y1="124.469" x2="216.182" y2="124.469" stroke="#16a34a"/>
+<line x1="208.182" y1="123.779" x2="216.182" y2="123.779" stroke="#16a34a"/>
+<circle cx="212.182" cy="124.121" r="3.5" fill="#16a34a"/>
+<line x1="279.273" y1="165.334" x2="279.273" y2="163.689" stroke="#16a34a"/>
+<line x1="275.273" y1="165.334" x2="283.273" y2="165.334" stroke="#16a34a"/>
+<line x1="275.273" y1="163.689" x2="283.273" y2="163.689" stroke="#16a34a"/>
+<circle cx="279.273" cy="164.496" r="3.5" fill="#16a34a"/>
+<line x1="346.364" y1="241.868" x2="346.364" y2="238.059" stroke="#16a34a"/>
+<line x1="342.364" y1="241.868" x2="350.364" y2="241.868" stroke="#16a34a"/>
+<line x1="342.364" y1="238.059" x2="350.364" y2="238.059" stroke="#16a34a"/>
+<circle cx="346.364" cy="239.881" r="3.5" fill="#16a34a"/>
+<line x1="413.455" y1="398" x2="413.455" y2="321.957" stroke="#16a34a"/>
+<line x1="409.455" y1="398" x2="417.455" y2="398" stroke="#16a34a"/>
+<line x1="409.455" y1="321.957" x2="417.455" y2="321.957" stroke="#16a34a"/>
+<circle cx="413.455" cy="358.39" r="3.5" fill="#16a34a"/>
+<line x1="584" y1="96" x2="608" y2="96" stroke="#16a34a" stroke-width="2"/>
+<text x="614" y="100" font-size="12">16QAM</text>
+<path d="M78,77.1729 L145.091,84.3357 L212.182,93.3836 L279.273,105.969 L346.364,127.354 L413.455,165.904 L480.545,237.207 L547.636,358.39" fill="none" stroke="#9333ea" stroke-width="2"/>
+<line x1="78" y1="77.2347" x2="78" y2="77.1112" stroke="#9333ea"/>
+<line x1="74" y1="77.2347" x2="82" y2="77.2347" stroke="#9333ea"/>
+<line x1="74" y1="77.1112" x2="82" y2="77.1112" stroke="#9333ea"/>
+<circle cx="78" cy="77.1729" r="3.5" fill="#9333ea"/>
+<line x1="145.091" y1="84.4785" x2="145.091" y2="84.1939" stroke="#9333ea"/>
+<line x1="141.091" y1="84.4785" x2="149.091" y2="84.4785" stroke="#9333ea"/>
+<line x1="141.091" y1="84.1939" x2="149.091" y2="84.1939" stroke="#9333ea"/>
+<circle cx="145.091" cy="84.3357" r="3.5" fill="#9333ea"/>
+<line x1="212.182" y1="93.6052" x2="212.182" y2="93.1643" stroke="#9333ea"/>
+<line x1="208.182" y1="93.6052" x2="216.182" y2="93.6052" stroke="#9333ea"/>
+<line x1="208.182" y1="93.1643" x2="216.182" y2="93.1643" stroke="#9333ea"/>
+<circle cx="212.182" cy="93.3836" r="3.5" fill="#9333ea"/>
+<line x1="279.273" y1="106.12" x2="279.273" y2="105.819" stroke="#9333ea"/>
+<line x1="275.273" y1="106.12" x2="283.273" y2="106.12" stroke="#9333ea"/>
+<line x1="275.273" y1="105.819" x2="283.273" y2="105.819" stroke="#9333ea"/>
+<circle cx="279.273" cy="105.969" r="3.5" fill="#9333ea"/>
+<line x1="346.364" y1="127.923" x2="346.364" y2="126.8" stroke="#9333ea"/>
+<line x1="342.364" y1="127.923" x2="350.364" y2="127.923" stroke="#9333ea"/>
+<line x1="342.364" y1="126.8" x2="350.364" y2="126.8" stroke="#9333ea"/>
+<circle cx="346.364" cy="127.354" r="3.5" fill="#9333ea"/>
+<line x1="413.455" y1="167.804" x2="413.455" y2="164.156" stroke="#9333ea"/>
+<line x1="409.455" y1="167.804" x2="417.455" y2="167.804" stroke="#9333ea"/>
+<line x1="409.455" y1="164.156" x2="417.455" y2="164.156" stroke="#9333ea"/>
+<circle cx="413.455" cy="165.904" r="3.5" fill="#9333ea"/>
+<line x1="480.545" y1="239.021" x2="480.545" y2="235.532" stroke="#9333ea"/>
+<line x1="476.545" y1="239.021" x2="484.545" y2="239.021" stroke="#9333ea"/>
+<line x1="476.545" y1="235.532" x2="484.545" y2="235.532" stroke="#9333ea"/>
+<circle cx="480.545" cy="237.207" r="3.5" fill="#9333ea"/>
+<line x1="547.636" y1="398" x2="547.636" y2="321.957" stroke="#9333ea"/>
+<line x1="543.636" y1="398" x2="551.636" y2="398" stroke="#9333ea"/>
+<line x1="543.636" y1="321.957" x2="551.636" y2="321.957" stroke="#9333ea"/>
+<circle cx="547.636" cy="358.39" r="3.5" fill="#9333ea"/>
+<line x1="584" y1="116" x2="608" y2="116" stroke="#9333ea" stroke-width="2"/>
+<text x="614" y="120" font-size="12">64QAM</text>
+<path d="M78,177.753 L145.091,270.955 L212.182,270.256 L413.455,358.39 L547.636,358.39" fill="none" stroke="#ea580c" stroke-width="2"/>
+<line x1="78" y1="178.955" x2="78" y2="176.613" stroke="#ea580c"/>
+<line x1="74" y1="178.955" x2="82" y2="178.955" stroke="#ea580c"/>
+<line x1="74" y1="176.613" x2="82" y2="176.613" stroke="#ea580c"/>
+<circle cx="78" cy="177.753" r="3.5" fill="#ea580c"/>
+<line x1="145.091" y1="278.195" x2="145.091" y2="265.527" stroke="#ea580c"/>
+<line x1="141.091" y1="278.195" x2="149.091" y2="278.195" stroke="#ea580c"/>
+<line x1="141.091" y1="265.527" x2="149.091" y2="265.527" stroke="#ea580c"/>
+<circle cx="145.091" cy="270.955" r="3.5" fill="#ea580c"/>
+<line x1="212.182" y1="274.838" x2="212.182" y2="266.47" stroke="#ea580c"/>
+<line x1="208.182" y1="274.838" x2="216.182" y2="274.838" stroke="#ea580c"/>
+<line x1="208.182" y1="266.47" x2="216.182" y2="266.47" stroke="#ea580c"/>
+<circle cx="212.182" cy="270.256" r="3.5" fill="#ea580c"/>
+<line x1="413.455" y1="398" x2="413.455" y2="321.957" stroke="#ea580c"/>
+<line x1="409.455" y1="398" x2="417.455" y2="398" stroke="#ea580c"/>
+<line x1="409.455" y1="321.957" x2="417.455" y2="321.957" stroke="#ea580c"/>
+<circle cx="413.455" cy="358.39" r="3.5" fill="#ea580c"/>
+<line x1="547.636" y1="398" x2="547.636" y2="321.957" stroke="#ea580c"/>
+<line x1="543.636" y1="398" x2="551.636" y2="398" stroke="#ea580c"/>
+<line x1="543.636" y1="321.957" x2="551.636" y2="321.957" stroke="#ea580c"/>
+<circle cx="547.636" cy="358.39" r="3.5" fill="#ea580c"/>
+<line x1="584" y1="136" x2="608" y2="136" stroke="#ea580c" stroke-width="2"/>
+<text x="614" y="140" font-size="12">AMC</text>
+</svg>
