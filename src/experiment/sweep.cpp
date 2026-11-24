@@ -1,6 +1,9 @@
 #include "experiment/sweep.hpp"
 
 #include <algorithm>
+#include <atomic>
+#include <mutex>
+#include <thread>
 #include <cstdio>
 #include <set>
 #include <tuple>
@@ -60,14 +63,42 @@ std::vector<RunSpec> SweepPlan::expand() const {
     return out;
 }
 
+namespace {
+void shiftPorts(RunSpec& s, std::uint16_t offset) {
+    for (Endpoint* e : {&s.arq.senderLocal, &s.arq.channelData, &s.arq.receiverLocal, &s.arq.channelAck,
+                        &s.channel.dataIn, &s.channel.ackIn, &s.channel.receiver, &s.channel.sender})
+        e->port = std::uint16_t(e->port + offset);
+}
+}  // namespace
+
 Table runSweep(const SweepPlan& plan, const ProgressFn& progress) {
     Table t(resultColumns());
     auto specs = plan.expand();
-    for (std::size_t i = 0; i < specs.size(); ++i) {
-        RunResult r = runExperiment(specs[i]);
-        t.addRow(resultRow(r));
-        if (progress) progress(i + 1, specs.size(), r);
-    }
+    std::vector<RunResult> results(specs.size());
+    const int jobs = std::max(1, std::min<int>(plan.jobs, int(specs.size())));
+
+    // Every worker owns a private block of UDP ports, so up to `jobs`
+    // sender/channel/receiver triples run side by side without interfering.
+    std::atomic<std::size_t> next{0};
+    std::size_t done = 0;
+    std::mutex mu;
+    auto worker = [&](int slot) {
+        for (std::size_t i = next++; i < specs.size(); i = next++) {
+            RunSpec s = specs[i];
+            shiftPorts(s, std::uint16_t(slot * 100));
+            RunResult r = runExperiment(s);
+            r.spec = specs[i];  // report the canonical configuration
+            std::lock_guard<std::mutex> lock(mu);
+            results[i] = r;
+            ++done;
+            if (progress) progress(done, specs.size(), r);
+        }
+    };
+    std::vector<std::thread> pool;
+    for (int k = 0; k < jobs; ++k) pool.emplace_back(worker, k);
+    for (auto& th : pool) th.join();
+
+    for (const auto& r : results) t.addRow(resultRow(r));
     return t;
 }
 

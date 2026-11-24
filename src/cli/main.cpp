@@ -39,6 +39,13 @@ std::atomic<bool> g_stop{false};
 
 void onSignal(int) { g_stop = true; }
 
+/// Parallel experiments for sweeps: half the hardware threads, at most 8, so the
+/// channel emulators keep sub-millisecond timing.
+int defaultJobs() {
+    unsigned hw = std::thread::hardware_concurrency();
+    return int(std::max(1U, std::min(8U, hw / 2)));
+}
+
 // ----------------------------------------------------------------- help text
 void printHelp() {
     std::printf(
@@ -81,6 +88,7 @@ void printHelp() {
         "  --reps N                 repetitions                       (default 1 for run, 5 for sweep)\n"
         "  --seed S                 base pseudo-random seed           (default 2026)\n"
         "  --csv PATH               write raw per-run results\n"
+        "  --jobs J                 sweep: experiments in parallel, own UDP ports each (default cores/2, max 8)\n"
         "  --max-time S, --stall S  abort a run after S s in total / S s without progress (300 / 60)\n"
         "  --verbose                print a packet-level event trace\n\n"
         "EXAMPLES\n"
@@ -346,6 +354,7 @@ int cmdPresets() {
 int runPreset(const Preset& preset, const Args& a, const fs::path& outRoot) {
     SweepPlan plan = preset.plan;
     if (a.has("reps")) plan.repetitions = int(a.num("reps", plan.repetitions));
+    plan.jobs = int(a.num("jobs", defaultJobs()));
     if (a.has("file-kb")) plan.fileBytes = std::size_t(a.num("file-kb", 50) * 1000);
     if (a.has("seed")) plan.baseSeed = std::uint32_t(a.num("seed", plan.baseSeed));
     fs::path dir = outRoot;
@@ -399,7 +408,7 @@ int cmdSweep(const Args& a) {
     const fs::path out = a.str("out", "results");
     if (a.has("preset")) {
         const std::string name = a.str("preset");
-        a.str("reps"); a.str("file-kb"); a.str("seed");
+        a.str("reps"); a.str("file-kb"); a.str("seed"); a.str("jobs");
         warnUnused(a);
         if (name == "all") {
             for (const auto& p : builtinPresets())
@@ -444,6 +453,7 @@ int cmdSweep(const Args& a) {
     plan.baseSeed = std::uint32_t(a.num("seed", 2026));
     plan.maxTimeMs = a.num("max-time", 300.0) * 1000.0;
     plan.stallMs = a.num("stall", 60.0) * 1000.0;
+    a.str("jobs");  // consumed by runPreset
     warnUnused(a);
     return runPreset(custom, a, out);
 }

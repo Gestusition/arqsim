@@ -34,6 +34,7 @@ struct SweepPlan {
     std::uint32_t baseSeed = 2026;
     double maxTimeMs = 300000.0;
     double stallMs = 60000.0;
+    int jobs = 1;  // experiments run in parallel, each on its own port block
 
     std::vector<RunSpec> expand() const;  // one spec per (config, repetition)
 };
