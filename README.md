@@ -121,6 +121,7 @@ The results committed in [`results/`](results/) and discussed in [`docs/RESULTS.
 
 ## Documentation
 
+* [`docs/REPORT.pdf`](docs/REPORT.pdf): final report (theory, design, methodology, results, discussion)
 * [`docs/DESIGN.md`](docs/DESIGN.md): architecture, packet format, channel/PHY model, protocol rules, metric definitions
 * [`docs/RESULTS.md`](docs/RESULTS.md): figures and discussion of the experiments
 
