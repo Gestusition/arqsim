@@ -222,7 +222,7 @@ std::vector<Preset> builtinPresets() {
         p.plan.rtoModes = {RtoMode::Adaptive};
         p.plan.repetitions = 3;
         p.plan.maxTimeMs = 30000;
-        p.plan.stallMs = 3000;  // hopeless SNR/modulation pairs abort quickly
+        p.plan.stallMs = 10000;  // hopeless SNR/modulation pairs abort sooner
         p.figures = {
             {"mod_gbn_throughput_vs_snr.svg", "GBN (N=16) throughput vs SNR per modulation", "snr_db", "throughput_kbps",
              "SNR Es/N0 (dB)", "Throughput (kbit/s)", {"modulation"}, {{"protocol", "gbn"}}, "", false},

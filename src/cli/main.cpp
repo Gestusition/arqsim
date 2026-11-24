@@ -81,7 +81,7 @@ void printHelp() {
         "  --reps N                 repetitions                       (default 1 for run, 5 for sweep)\n"
         "  --seed S                 base pseudo-random seed           (default 2026)\n"
         "  --csv PATH               write raw per-run results\n"
-        "  --max-time S, --stall S  abort a run after S s in total / S s without progress (300 / 20)\n"
+        "  --max-time S, --stall S  abort a run after S s in total / S s without progress (300 / 60)\n"
         "  --verbose                print a packet-level event trace\n\n"
         "EXAMPLES\n"
         "  arqsim run --proto sr --win 8 --loss 0.1 --rtt 50 --reps 5\n"
@@ -106,7 +106,7 @@ ArqConfig arqFromArgs(const Args& a) {
     c.useNak = a.flag("nak");
     c.rttMs = a.num("rtt", 50.0);
     c.maxTimeMs = a.num("max-time", 300.0) * 1000.0;
-    c.stallMs = a.num("stall", 20.0) * 1000.0;
+    c.stallMs = a.num("stall", 60.0) * 1000.0;
     const std::string host = a.str("host", "127.0.0.1");
     c.senderLocal = {host, std::uint16_t(a.num("sender-port", 50000))};
     c.channelData = {host, std::uint16_t(a.num("chan-data-port", 50010))};
@@ -443,7 +443,7 @@ int cmdSweep(const Args& a) {
     plan.fileBytes = std::size_t(a.num("file-kb", 50) * 1000);
     plan.baseSeed = std::uint32_t(a.num("seed", 2026));
     plan.maxTimeMs = a.num("max-time", 300.0) * 1000.0;
-    plan.stallMs = a.num("stall", 20.0) * 1000.0;
+    plan.stallMs = a.num("stall", 60.0) * 1000.0;
     warnUnused(a);
     return runPreset(custom, a, out);
 }

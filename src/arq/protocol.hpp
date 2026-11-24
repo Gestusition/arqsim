@@ -24,7 +24,7 @@ struct ArqConfig {
     bool useNak = false;             // receiver sends NAKs, sender retransmits early
     std::uint16_t session = 0;       // 0 on the receiver = accept first session seen
     double maxTimeMs = 300000.0;     // abort guard: total time
-    double stallMs = 20000.0;        // abort guard: no in-order progress for this long
+    double stallMs = 60000.0;        // abort guard: no in-order progress for this long
 
     Endpoint senderLocal{"127.0.0.1", 50000};
     Endpoint channelData{"127.0.0.1", 50010};

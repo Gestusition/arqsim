@@ -33,7 +33,7 @@ struct SweepPlan {
     int repetitions = 5;
     std::uint32_t baseSeed = 2026;
     double maxTimeMs = 300000.0;
-    double stallMs = 20000.0;
+    double stallMs = 60000.0;
 
     std::vector<RunSpec> expand() const;  // one spec per (config, repetition)
 };
