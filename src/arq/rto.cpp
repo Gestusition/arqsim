@@ -6,7 +6,12 @@
 namespace arq {
 
 RtoEstimator::RtoEstimator(RtoMode mode, double nominalRttMs, double factor)
-    : mode_(mode), rto_(std::max(kMinRto, factor * nominalRttMs)) {}
+    : mode_(mode),
+      // Fixed mode uses the proposal's k x RTT. Adaptive mode does not assume
+      // the RTT is known and starts from the conservative RFC 6298 value (1 s),
+      // which avoids spurious timeouts on the first window before any sample.
+      rto_(mode == RtoMode::Adaptive ? std::max(kInitialAdaptive, factor * nominalRttMs)
+                                     : std::max(kMinRto, factor * nominalRttMs)) {}
 
 void RtoEstimator::onSample(double r) {
     ++samples_;
