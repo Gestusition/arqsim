@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="460" viewBox="0 0 760 460" font-family="Helvetica, Arial, sans-serif">
+<rect width="100%" height="100%" fill="#ffffff"/>
+<text x="380" y="26" text-anchor="middle" font-size="16" font-weight="bold">Fixed vs adaptive RTO: throughput</text>
+<line x1="78" y1="398" x2="570" y2="398" stroke="#e5e7eb"/>
+<text x="70" y="402" text-anchor="end" font-size="11">0</text>
+<line x1="78" y1="354" x2="570" y2="354" stroke="#e5e7eb"/>
+<text x="70" y="358" text-anchor="end" font-size="11">200</text>
+<line x1="78" y1="310" x2="570" y2="310" stroke="#e5e7eb"/>
+<text x="70" y="314" text-anchor="end" font-size="11">400</text>
+<line x1="78" y1="266" x2="570" y2="266" stroke="#e5e7eb"/>
+<text x="70" y="270" text-anchor="end" font-size="11">600</text>
+<line x1="78" y1="222" x2="570" y2="222" stroke="#e5e7eb"/>
+<text x="70" y="226" text-anchor="end" font-size="11">800</text>
+<line x1="78" y1="178" x2="570" y2="178" stroke="#e5e7eb"/>
+<text x="70" y="182" text-anchor="end" font-size="11">1000</text>
+<line x1="78" y1="134" x2="570" y2="134" stroke="#e5e7eb"/>
+<text x="70" y="138" text-anchor="end" font-size="11">1200</text>
+<line x1="78" y1="90" x2="570" y2="90" stroke="#e5e7eb"/>
+<text x="70" y="94" text-anchor="end" font-size="11">1400</text>
+<line x1="78" y1="46" x2="570" y2="46" stroke="#e5e7eb"/>
+<text x="70" y="50" text-anchor="end" font-size="11">1600</text>
+<line x1="78" y1="46" x2="78" y2="398" stroke="#f1f5f9"/>
+<text x="78" y="416" text-anchor="middle" font-size="11">10</text>
+<line x1="132.667" y1="46" x2="132.667" y2="398" stroke="#f1f5f9"/>
+<text x="132.667" y="416" text-anchor="middle" font-size="11">20</text>
+<line x1="187.333" y1="46" x2="187.333" y2="398" stroke="#f1f5f9"/>
+<text x="187.333" y="416" text-anchor="middle" font-size="11">30</text>
+<line x1="242" y1="46" x2="242" y2="398" stroke="#f1f5f9"/>
+<text x="242" y="416" text-anchor="middle" font-size="11">40</text>
+<line x1="296.667" y1="46" x2="296.667" y2="398" stroke="#f1f5f9"/>
+<text x="296.667" y="416" text-anchor="middle" font-size="11">50</text>
+<line x1="351.333" y1="46" x2="351.333" y2="398" stroke="#f1f5f9"/>
+<text x="351.333" y="416" text-anchor="middle" font-size="11">60</text>
+<line x1="406" y1="46" x2="406" y2="398" stroke="#f1f5f9"/>
+<text x="406" y="416" text-anchor="middle" font-size="11">70</text>
+<line x1="460.667" y1="46" x2="460.667" y2="398" stroke="#f1f5f9"/>
+<text x="460.667" y="416" text-anchor="middle" font-size="11">80</text>
+<line x1="515.333" y1="46" x2="515.333" y2="398" stroke="#f1f5f9"/>
+<text x="515.333" y="416" text-anchor="middle" font-size="11">90</text>
+<line x1="570" y1="46" x2="570" y2="398" stroke="#f1f5f9"/>
+<text x="570" y="416" text-anchor="middle" font-size="11">100</text>
+<rect x="78" y="46" width="492" height="352" fill="none" stroke="#374151"/>
+<text x="324" y="442" text-anchor="middle" font-size="13">RTT (ms)</text>
+<text transform="translate(20,222) rotate(-90)" text-anchor="middle" font-size="13">Throughput (kbit/s)</text>
+<path d="M78,256.286 L160,164.936 L296.667,234.366 L570,304.85" fill="none" stroke="#2563eb" stroke-width="2"/>
+<line x1="78" y1="309.485" x2="78" y2="203.086" stroke="#2563eb"/>
+<line x1="74" y1="309.485" x2="82" y2="309.485" stroke="#2563eb"/>
+<line x1="74" y1="203.086" x2="82" y2="203.086" stroke="#2563eb"/>
+<circle cx="78" cy="256.286" r="3.5" fill="#2563eb"/>
+<line x1="160" y1="234.854" x2="160" y2="95.0191" stroke="#2563eb"/>
+<line x1="156" y1="234.854" x2="164" y2="234.854" stroke="#2563eb"/>
+<line x1="156" y1="95.0191" x2="164" y2="95.0191" stroke="#2563eb"/>
+<circle cx="160" cy="164.936" r="3.5" fill="#2563eb"/>
+<line x1="296.667" y1="299.93" x2="296.667" y2="168.802" stroke="#2563eb"/>
+<line x1="292.667" y1="299.93" x2="300.667" y2="299.93" stroke="#2563eb"/>
+<line x1="292.667" y1="168.802" x2="300.667" y2="168.802" stroke="#2563eb"/>
+<circle cx="296.667" cy="234.366" r="3.5" fill="#2563eb"/>
+<line x1="570" y1="343.597" x2="570" y2="266.102" stroke="#2563eb"/>
+<line x1="566" y1="343.597" x2="574" y2="343.597" stroke="#2563eb"/>
+<line x1="566" y1="266.102" x2="574" y2="266.102" stroke="#2563eb"/>
+<circle cx="570" cy="304.85" r="3.5" fill="#2563eb"/>
+<line x1="584" y1="56" x2="608" y2="56" stroke="#2563eb" stroke-width="2"/>
+<text x="614" y="60" font-size="12">GBN fixed RTO</text>
+<path d="M78,188.156 L160,213.923 L296.667,259.79 L570,310.307" fill="none" stroke="#dc2626" stroke-width="2"/>
+<line x1="78" y1="297.447" x2="78" y2="78.8651" stroke="#dc2626"/>
+<line x1="74" y1="297.447" x2="82" y2="297.447" stroke="#dc2626"/>
+<line x1="74" y1="78.8651" x2="82" y2="78.8651" stroke="#dc2626"/>
+<circle cx="78" cy="188.156" r="3.5" fill="#dc2626"/>
+<line x1="160" y1="289.742" x2="160" y2="138.104" stroke="#dc2626"/>
+<line x1="156" y1="289.742" x2="164" y2="289.742" stroke="#dc2626"/>
+<line x1="156" y1="138.104" x2="164" y2="138.104" stroke="#dc2626"/>
+<circle cx="160" cy="213.923" r="3.5" fill="#dc2626"/>
+<line x1="296.667" y1="326.55" x2="296.667" y2="193.031" stroke="#dc2626"/>
+<line x1="292.667" y1="326.55" x2="300.667" y2="326.55" stroke="#dc2626"/>
+<line x1="292.667" y1="193.031" x2="300.667" y2="193.031" stroke="#dc2626"/>
+<circle cx="296.667" cy="259.79" r="3.5" fill="#dc2626"/>
+<line x1="570" y1="348.628" x2="570" y2="271.987" stroke="#dc2626"/>
+<line x1="566" y1="348.628" x2="574" y2="348.628" stroke="#dc2626"/>
+<line x1="566" y1="271.987" x2="574" y2="271.987" stroke="#dc2626"/>
+<circle cx="570" cy="310.307" r="3.5" fill="#dc2626"/>
+<line x1="584" y1="76" x2="608" y2="76" stroke="#dc2626" stroke-width="2"/>
+<text x="614" y="80" font-size="12">GBN adaptive RTO</text>
+<path d="M78,341.56 L160,185.562 L296.667,188.277 L570,294.758" fill="none" stroke="#16a34a" stroke-width="2"/>
+<line x1="78" y1="349.214" x2="78" y2="333.905" stroke="#16a34a"/>
+<line x1="74" y1="349.214" x2="82" y2="349.214" stroke="#16a34a"/>
+<line x1="74" y1="333.905" x2="82" y2="333.905" stroke="#16a34a"/>
+<circle cx="78" cy="341.56" r="3.5" fill="#16a34a"/>
+<line x1="160" y1="225.177" x2="160" y2="145.948" stroke="#16a34a"/>
+<line x1="156" y1="225.177" x2="164" y2="225.177" stroke="#16a34a"/>
+<line x1="156" y1="145.948" x2="164" y2="145.948" stroke="#16a34a"/>
+<circle cx="160" cy="185.562" r="3.5" fill="#16a34a"/>
+<line x1="296.667" y1="233.643" x2="296.667" y2="142.91" stroke="#16a34a"/>
+<line x1="292.667" y1="233.643" x2="300.667" y2="233.643" stroke="#16a34a"/>
+<line x1="292.667" y1="142.91" x2="300.667" y2="142.91" stroke="#16a34a"/>
+<circle cx="296.667" cy="188.277" r="3.5" fill="#16a34a"/>
+<line x1="570" y1="327.968" x2="570" y2="261.548" stroke="#16a34a"/>
+<line x1="566" y1="327.968" x2="574" y2="327.968" stroke="#16a34a"/>
+<line x1="566" y1="261.548" x2="574" y2="261.548" stroke="#16a34a"/>
+<circle cx="570" cy="294.758" r="3.5" fill="#16a34a"/>
+<line x1="584" y1="96" x2="608" y2="96" stroke="#16a34a" stroke-width="2"/>
+<text x="614" y="100" font-size="12">SR fixed RTO</text>
+<path d="M78,201.604 L160,136.365 L296.667,247.542 L570,298.105" fill="none" stroke="#9333ea" stroke-width="2"/>
+<line x1="78" y1="323.585" x2="78" y2="79.6239" stroke="#9333ea"/>
+<line x1="74" y1="323.585" x2="82" y2="323.585" stroke="#9333ea"/>
+<line x1="74" y1="79.6239" x2="82" y2="79.6239" stroke="#9333ea"/>
+<circle cx="78" cy="201.604" r="3.5" fill="#9333ea"/>
+<line x1="160" y1="215.345" x2="160" y2="57.3848" stroke="#9333ea"/>
+<line x1="156" y1="215.345" x2="164" y2="215.345" stroke="#9333ea"/>
+<line x1="156" y1="57.3848" x2="164" y2="57.3848" stroke="#9333ea"/>
+<circle cx="160" cy="136.365" r="3.5" fill="#9333ea"/>
+<line x1="296.667" y1="332.891" x2="296.667" y2="162.193" stroke="#9333ea"/>
+<line x1="292.667" y1="332.891" x2="300.667" y2="332.891" stroke="#9333ea"/>
+<line x1="292.667" y1="162.193" x2="300.667" y2="162.193" stroke="#9333ea"/>
+<circle cx="296.667" cy="247.542" r="3.5" fill="#9333ea"/>
+<line x1="570" y1="338.416" x2="570" y2="257.794" stroke="#9333ea"/>
+<line x1="566" y1="338.416" x2="574" y2="338.416" stroke="#9333ea"/>
+<line x1="566" y1="257.794" x2="574" y2="257.794" stroke="#9333ea"/>
+<circle cx="570" cy="298.105" r="3.5" fill="#9333ea"/>
+<line x1="584" y1="116" x2="608" y2="116" stroke="#9333ea" stroke-width="2"/>
+<text x="614" y="120" font-size="12">SR adaptive RTO</text>
+</svg>
