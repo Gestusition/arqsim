@@ -49,6 +49,7 @@ protected:
     virtual TimePoint nextDeadline() const = 0;  // TimePoint::max() if no timer
     virtual void onTimers(TimePoint now) = 0;
     virtual bool allAcked() const = 0;
+    virtual std::uint32_t progress() const = 0;  // packets acknowledged in order
 
     // ---- helpers for subclasses ----
     void sendData(std::uint32_t seq, bool retransmission, TimePoint now);

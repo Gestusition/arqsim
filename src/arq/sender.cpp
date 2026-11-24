@@ -50,6 +50,7 @@ protected:
         }
     }
     bool allAcked() const override { return next_ >= total(); }
+    std::uint32_t progress() const override { return next_; }
 
 private:
     std::uint32_t next_ = 0;
@@ -99,6 +100,7 @@ protected:
         }
     }
     bool allAcked() const override { return base_ >= total(); }
+    std::uint32_t progress() const override { return base_; }
 
 private:
     void goBack(TimePoint now) {
@@ -168,6 +170,7 @@ protected:
         }
     }
     bool allAcked() const override { return base_ >= total(); }
+    std::uint32_t progress() const override { return base_; }
 
 private:
     std::uint32_t base_ = 0;
@@ -227,6 +230,8 @@ SenderStats ArqSender::run(const std::vector<std::uint8_t>& file) {
     const TimePoint start = Clock::now();
     std::vector<std::uint8_t> buf;
     TimePoint now = start;
+    std::uint32_t lastProgress = 0;
+    TimePoint lastProgressAt = start;
     while (!allAcked()) {
         fillWindow(now);
         TimePoint deadline = nextDeadline();
@@ -253,7 +258,12 @@ SenderStats ArqSender::run(const std::vector<std::uint8_t>& file) {
         }
         now = Clock::now();
         onTimers(now);
-        if (msBetween(start, now) > cfg_.maxTimeMs) {
+        if (progress() != lastProgress) {
+            lastProgress = progress();
+            lastProgressAt = now;
+        }
+        if (msBetween(start, now) > cfg_.maxTimeMs || msBetween(lastProgressAt, now) > cfg_.stallMs) {
+            ARQ_TRACE("SEND", "aborting: no progress / time limit reached");
             stats_.completed = false;
             stats_.transferMs = msBetween(start, now);
             stats_.finalRtoMs = rto_.rtoMs();
