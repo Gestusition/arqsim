@@ -10,8 +10,10 @@ RtoEstimator::RtoEstimator(RtoMode mode, double nominalRttMs, double factor)
       // Fixed mode uses the proposal's k x RTT. Adaptive mode does not assume
       // the RTT is known and starts from the conservative RFC 6298 value (1 s),
       // which avoids spurious timeouts on the first window before any sample.
-      rto_(mode == RtoMode::Adaptive ? std::max(kInitialAdaptive, factor * nominalRttMs)
-                                     : std::max(kMinRto, factor * nominalRttMs)) {}
+      base_(mode == RtoMode::Adaptive ? std::max(kInitialAdaptive, factor * nominalRttMs)
+                                      : std::max(kMinRto, factor * nominalRttMs)) {}
+
+double RtoEstimator::rtoMs() const { return std::min(kMaxRto, base_ * double(1U << backoff_)); }
 
 void RtoEstimator::onSample(double r) {
     ++samples_;
@@ -24,12 +26,21 @@ void RtoEstimator::onSample(double r) {
         rttvar_ = 0.75 * rttvar_ + 0.25 * std::fabs(srtt_ - r);
         srtt_ = 0.875 * srtt_ + 0.125 * r;
     }
-    rto_ = std::clamp(srtt_ + std::max(kGranularity, 4.0 * rttvar_), kMinRto, kMaxRto);
+    base_ = std::clamp(srtt_ + std::max(kGranularity, 4.0 * rttvar_), kMinRto, kMaxRto);
+    backoff_ = 0;
 }
 
 void RtoEstimator::onTimeout() {
     if (mode_ != RtoMode::Adaptive) return;
-    rto_ = std::min(kMaxRto, rto_ * 2.0);
+    if (rtoMs() < kMaxRto) ++backoff_;
+}
+
+void RtoEstimator::onProgress() {
+    // An ACK for new data proves the path works again, so the exponential
+    // back-off is cleared (as Linux TCP does). Without this, Karn's rule
+    // starves Go-Back-N of RTT samples (every packet in the window was
+    // retransmitted) and the back-off keeps growing across unrelated losses.
+    backoff_ = 0;
 }
 
 }  // namespace arq

@@ -174,6 +174,8 @@ int main(int argc, char** argv) {
         double before = a.rtoMs();
         a.onTimeout();
         CHECK_NEAR(a.rtoMs(), 2 * before, 1e-9);  // exponential back-off
+        a.onProgress();
+        CHECK_NEAR(a.rtoMs(), before, 1e-9);      // cleared when new data is ACKed
     });
 
     test("95% confidence interval (Student t)", [] {

@@ -28,6 +28,7 @@ protected:
     void onAck(std::uint32_t ackNo, TimePoint now) override {
         if (awaiting_ && ackNo == next_ + 1) {
             sampleRtt(next_, now);
+            rto_.onProgress();
             ++next_;
             awaiting_ = false;
             deadline_ = kNever;
@@ -78,6 +79,7 @@ protected:
     void onAck(std::uint32_t ackNo, TimePoint now) override {
         if (ackNo > base_ && ackNo <= nextSeq_) {
             sampleRtt(ackNo - 1, now);
+            rto_.onProgress();
             base_ = ackNo;
             deadline_ = (base_ == nextSeq_) ? kNever : afterMs(now, rto_.rtoMs());
         }
@@ -139,6 +141,7 @@ protected:
             acked_[seq] = true;
             deadline_[seq] = kNever;
             sampleRtt(seq, now);
+            rto_.onProgress();
             while (base_ < total() && acked_[base_]) ++base_;
         }
     }
