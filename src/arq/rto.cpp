@@ -7,10 +7,11 @@ namespace arq {
 
 RtoEstimator::RtoEstimator(RtoMode mode, double nominalRttMs, double factor)
     : mode_(mode),
-      // Fixed mode uses the proposal's k x RTT. Adaptive mode does not assume
-      // the RTT is known and starts from the conservative RFC 6298 value (1 s),
-      // which avoids spurious timeouts on the first window before any sample.
-      base_(mode == RtoMode::Adaptive ? std::max(kInitialAdaptive, factor * nominalRttMs)
+      // Fixed mode uses the proposal's k x RTT. Adaptive mode seeds the
+      // estimator with a cached path estimate (SRTT = RTT, RTTVAR = RTT/2, so
+      // RTO = 3 RTT) the way Linux reuses per-destination tcp_metrics. RFC
+      // 6298's cold-start value of 1 s would dominate 50-packet transfers.
+      base_(mode == RtoMode::Adaptive ? std::max(kMinRto, 3.0 * nominalRttMs)
                                       : std::max(kMinRto, factor * nominalRttMs)) {}
 
 double RtoEstimator::rtoMs() const { return std::min(kMaxRto, base_ * double(1U << backoff_)); }

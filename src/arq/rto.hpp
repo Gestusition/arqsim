@@ -37,7 +37,6 @@ private:
     static constexpr double kMinRto = 5.0;
     static constexpr double kMaxRto = 4000.0;
     static constexpr double kGranularity = 5.0;  // absorbs OS scheduling jitter (~1-3 ms on Windows)
-    static constexpr double kInitialAdaptive = 1000.0;
 };
 
 }  // namespace arq

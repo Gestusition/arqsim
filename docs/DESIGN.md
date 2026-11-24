@@ -92,7 +92,9 @@ OS tick (≈15.6 ms) which would otherwise add random delay to every packet.
 ### RTO
 
 * `fixed`: `RTO = k × RTT` (k = 2, the proposal's policy).
-* `adaptive`: RFC 6298 — initial 1 s, `SRTT`, `RTTVAR`,
+* `adaptive`: RFC 6298, seeded with a cached path estimate (`SRTT = RTT`,
+  `RTTVAR = RTT/2`, so the initial RTO is 3·RTT, as Linux reuses tcp_metrics)
+  instead of the 1 s cold start that would dominate 50-packet transfers; `SRTT`, `RTTVAR`,
   `RTO = SRTT + max(G, 4·RTTVAR)` with `G = 5 ms`, Karn's algorithm and
   exponential back-off.
 

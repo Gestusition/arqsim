@@ -166,7 +166,7 @@ int main(int argc, char** argv) {
         CHECK_NEAR(fixed.rtoMs(), 100.0, 1e-9);  // fixed never backs off
 
         RtoEstimator a(RtoMode::Adaptive, 50, 2.0);
-        CHECK_NEAR(a.rtoMs(), 1000.0, 1e-9);     // RFC 6298 initial value
+        CHECK_NEAR(a.rtoMs(), 150.0, 1e-9);      // seeded: SRTT=RTT, RTTVAR=RTT/2
         a.onSample(40);                           // SRTT=40, RTTVAR=20 -> 120
         CHECK_NEAR(a.rtoMs(), 120.0, 1e-9);
         for (int i = 0; i < 50; ++i) a.onSample(40);
