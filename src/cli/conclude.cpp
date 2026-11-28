@@ -61,10 +61,14 @@ std::string upper(std::string s) {
 
 void heading(const char* title) { std::printf("\n  * %s\n", title); }
 
-template <class... A>
-void line(const char* fmt, A... a) {
+// Plain text and formatted lines are separate overloads so a format string is
+// never printed without arguments (clang -Wformat-security).
+void line(const char* text) { std::printf("      %s\n", text); }
+
+template <class A0, class... A>
+void line(const char* fmt, A0 a0, A... a) {
     std::printf("      ");
-    std::printf(fmt, a...);
+    std::printf(fmt, a0, a...);
     std::printf("\n");
 }
 

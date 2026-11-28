@@ -20,7 +20,13 @@ Modulation ChannelConfig::effectiveModulation(std::size_t frameBytes) const {
 
 namespace {
 
-constexpr double kSpinWindowMs = 16.0;
+// Spin window: how long before a delivery the emulator stops sleeping in select()
+// and polls instead. It starts at kMinSpinMs and grows to cover the worst select()
+// oversleep measured on this machine, so deliveries stay on time on any OS without
+// platform-specific code (e.g. macOS coalesces timers and can wake tens of ms late).
+constexpr double kMinSpinMs = 16.0;
+constexpr double kMaxSpinMs = 250.0;
+constexpr double kSpinMarginMs = 2.0;
 
 struct Pending {
     TimePoint deliverAt;
@@ -87,6 +93,7 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
     std::uint64_t order = 0;
     UdpSocket* socks[2] = {&dataSock, &ackSock};
     std::vector<std::uint8_t> buf;
+    double spinWindowMs = kMinSpinMs;
 
     while (!stop.load()) {
         // Deliver everything that is due.
@@ -98,18 +105,27 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
             queue.pop();
         }
 
-        // select() timeouts are only accurate to the OS tick (up to ~15.6 ms on
-        // Windows), which would add random delay to every packet. Sleep in
-        // select() only while the next delivery is far away, then poll and
-        // spin for the final stretch so deliveries happen within ~0.1 ms.
+        // select() timeouts are only as accurate as the OS makes them (a 15.6 ms
+        // tick on Windows, timer coalescing on macOS), which would add random
+        // delay to every packet. Sleep in select() only while the next delivery
+        // is far away, then poll and spin for the final stretch so deliveries
+        // happen within ~0.1 ms.
         int waitMs = 20;
         if (!queue.empty()) {
             double untilNext = msBetween(Clock::now(), queue.top().deliverAt);
-            waitMs = untilNext > kSpinWindowMs ? std::min(waitMs, int(untilNext - kSpinWindowMs)) : 0;
+            waitMs = untilNext > spinWindowMs ? std::min(waitMs, int(untilNext - spinWindowMs)) : 0;
         }
+        const TimePoint waitStart = Clock::now();
         int idx = UdpSocket::waitAny(socks, 2, waitMs);
         if (idx < 0) {
-            if (waitMs == 0) std::this_thread::yield();
+            if (waitMs == 0) {
+                std::this_thread::yield();
+            } else {
+                // A timed-out wait tells how late this OS wakes us up; keep the
+                // spin window larger than the worst lateness seen so far.
+                double lateMs = msBetween(waitStart, Clock::now()) - waitMs;
+                spinWindowMs = std::min(kMaxSpinMs, std::max(spinWindowMs, lateMs + kSpinMarginMs));
+            }
             continue;
         }
 
