@@ -44,6 +44,19 @@ ctest --test-dir build              # unit + end-to-end tests
 On Windows with MSYS2 UCRT64 you need the packages `mingw-w64-ucrt-x86_64-gcc`, `-cmake` and `-ninja`.
 The produced `build/arqsim.exe` is statically linked.
 
+## Run everything with one command (Windows)
+
+```powershell
+.\run            # build, tests, every demo, then ALL experiment presets (~8-10 min)
+.\run -Quick     # same, but only the short 'quick' sweep (~1 min)
+.\run -NoSweep   # build, tests and demos only
+```
+
+`run.ps1` (or `run.cmd` from cmd.exe) builds the project, runs the tests, and runs one demo per feature:
+SW/GBN/SR, the utilisation check against theory, fixed vs adaptive RTO, burst loss, NAK, modulation and AMC, the BER table, a packet-level trace and the three-process UDP mode with SHA-256 comparison.
+It then runs the sweeps and prints every table and ASCII bar chart.
+Output goes to `out/`, which is git-ignored, so the committed `results/` are left untouched.
+
 ## Quick start
 
 ```bash
