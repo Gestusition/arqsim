@@ -219,6 +219,8 @@ int cmdRun(const Args& a) {
         if (r.chDataCorrupted + r.chAckCorrupted > 0 || r.measuredBer > 0)
             std::printf("       PHY: %llu DATA / %llu ACK frames corrupted, measured BER %.2e\n",
                         (unsigned long long)r.chDataCorrupted, (unsigned long long)r.chAckCorrupted, r.measuredBer);
+        std::printf("       channel timing: deliveries late by %.3f ms on average, %.2f ms at most (spin window %.0f ms)\n",
+                    r.lateMeanMs, r.lateMaxMs, r.spinWindowMs);
         thr.push_back(r.throughputKbps);
         tt.push_back(r.transferMs);
         retx.push_back(double(r.retransmissions));

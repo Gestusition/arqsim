@@ -58,7 +58,8 @@ std::vector<std::string> configColumns() {
 std::vector<std::string> metricColumns() {
     return {"integrity",   "transfer_ms", "throughput_kbps", "efficiency", "utilization",   "theory_util",
             "data_tx",     "retransmissions", "timeouts",    "naks",       "ch_data_drop",  "ch_ack_drop",
-            "ch_data_corrupt", "ch_ack_corrupt", "ber",      "mean_rtt_ms", "final_rto_ms"};
+            "ch_data_corrupt", "ch_ack_corrupt", "ber",      "mean_rtt_ms", "final_rto_ms",
+            "late_mean_ms", "late_max_ms"};
 }
 
 int Table::col(const std::string& name) const {

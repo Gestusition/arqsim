@@ -96,14 +96,21 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
     double spinWindowMs = kMinSpinMs;
 
     while (!stop.load()) {
-        // Deliver everything that is due.
+        // Deliver everything that is due, and record how late each one is.
         TimePoint now = Clock::now();
         while (!queue.empty() && queue.top().deliverAt <= now) {
             const Pending& p = queue.top();
+            const double lateMs = msBetween(p.deliverAt, Clock::now());
             if (p.toReceiver) dataSock.sendTo(p.bytes, cfg_.receiver);
             else ackSock.sendTo(p.bytes, cfg_.sender);
             queue.pop();
+
+            const auto lateUs = std::uint64_t(std::max(0.0, lateMs) * 1000.0);
+            ++stats_.delivered;
+            stats_.lateSumUs += lateUs;
+            if (lateUs > stats_.lateMaxUs) stats_.lateMaxUs = lateUs;
         }
+        stats_.spinWindowUs = std::uint64_t(spinWindowMs * 1000.0);
 
         // select() timeouts are only as accurate as the OS makes them (a 15.6 ms
         // tick on Windows, timer coalescing on macOS), which would add random
@@ -117,15 +124,18 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
         }
         const TimePoint waitStart = Clock::now();
         int idx = UdpSocket::waitAny(socks, 2, waitMs);
+        if (waitMs > 0) {
+            // Any wait that lasted longer than asked shows how late this OS fires
+            // timeouts; keep the spin window larger than the worst case seen. This
+            // must also count waits that ended with a packet: under steady traffic
+            // (GBN/SR) a late timeout is usually "rescued" by the next arrival, so
+            // select() reports a packet, not a timeout, yet the delivery is late.
+            const double overMs = msBetween(waitStart, Clock::now()) - waitMs;
+            if (overMs > 0)
+                spinWindowMs = std::min(kMaxSpinMs, std::max(spinWindowMs, overMs + kSpinMarginMs));
+        }
         if (idx < 0) {
-            if (waitMs == 0) {
-                std::this_thread::yield();
-            } else {
-                // A timed-out wait tells how late this OS wakes us up; keep the
-                // spin window larger than the worst lateness seen so far.
-                double lateMs = msBetween(waitStart, Clock::now()) - waitMs;
-                spinWindowMs = std::min(kMaxSpinMs, std::max(spinWindowMs, lateMs + kSpinMarginMs));
-            }
+            if (waitMs == 0) std::this_thread::yield();
             continue;
         }
 

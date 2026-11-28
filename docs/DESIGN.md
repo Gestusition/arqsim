@@ -57,9 +57,21 @@ SR window constraint `N ≤ 2^(k-1)` is satisfied trivially.
    Resulting bit errors make the CRC fail at the receiver.
 4. **Propagation** – `RTT/2` (+ optional uniform jitter).
 
-The emulator uses `select()` for coarse waits and spins for the last 16 ms
-before a scheduled delivery, because Winsock rounds `select()` timeouts to the
-OS tick (≈15.6 ms) which would otherwise add random delay to every packet.
+The emulator uses `select()` for coarse waits and spins for the last stretch
+(the *spin window*) before a scheduled delivery, because `select()` timeouts
+are only as precise as the OS makes them: Winsock rounds them to the OS tick
+(≈15.6 ms), and macOS coalesces timers and can wake a thread tens of
+milliseconds late. The spin window starts at 16 ms and calibrates itself: after
+every wait, the emulator compares how long `select()` actually slept with what
+it asked for, and keeps the window above the worst oversleep seen (capped at
+250 ms). This also counts waits that ended with an arriving packet: under steady
+GBN/SR traffic, a late timeout is usually cut short by the next packet, so it never
+shows up as a timeout. There is one code path for every OS: where wake-ups are
+on time, the window stays at 16 ms.
+
+Every delivery's lateness (actual send time − scheduled time) is recorded and
+reported as `late_mean_ms` / `late_max_ms`. The tests require a mean below 2 ms
+for every protocol.
 
 ## Physical layer
 
@@ -123,6 +135,8 @@ before an ACK can possibly arrive. The `rto` preset quantifies this.
 | utilisation (measured) | `packets·L/R / transfer time` |
 | utilisation (theory) | `min(1, N·(L/R)/(RTT + L/R))` (proposal eq. 1 and 2) |
 | integrity | completed **and** size equal **and** SHA-256 equal |
+| delivery lateness (`late_mean_ms`, `late_max_ms`) | how much later than scheduled the channel released each packet, averaged and worst case; measures how faithfully the emulator reproduced the configured delay |
+| spin window (`spin_window_ms`) | final self-calibrated spin window of the emulator (16 ms where the OS wakes threads on time) |
 | 95 % CI | `t(0.975, n−1) · s / √n` over repetitions |
 
 Repetition *r* of every configuration uses the same seed, so all protocols
