@@ -1,5 +1,9 @@
 # arqsim: ARQ performance lab over UDP with a modulation-aware channel
 
+[![ci](https://github.com/Gestusition/arqsim/actions/workflows/ci.yml/badge.svg)](https://github.com/Gestusition/arqsim/actions/workflows/ci.yml)
+[![release](https://github.com/Gestusition/arqsim/actions/workflows/release.yml/badge.svg)](https://github.com/Gestusition/arqsim/actions/workflows/release.yml)
+![platforms](https://img.shields.io/badge/platforms-Windows%20%7C%20Linux%20%7C%20macOS-blue)
+
 `arqsim` is a C++17 command-line tool for experimental performance analysis of reliable data transfer.
 It compares **Stop-and-Wait**, **Go-Back-N** and **Selective Repeat** ARQ running over real UDP sockets.
 A channel emulator sits between sender and receiver and imposes:
@@ -9,8 +13,8 @@ A channel emulator sits between sender and receiver and imposes:
 * a **physical layer**: every frame is modulated with **BPSK, QPSK, 16-QAM or 64-QAM**, passed through an AWGN channel at a chosen SNR and demodulated. The resulting bit errors are caught by a per-packet CRC-32.
 * **Adaptive modulation (AMC)**, which picks the scheme with the highest expected goodput for the current SNR
 
-Everything is written in C++: protocols, sockets, impairments, CRC/SHA-256, statistics, CSV output and the SVG figures.
-No scripts are used, as the proposal requires.
+Everything is written in C++: protocols, sockets, impairments, CRC/SHA-256, statistics, CSV output, the SVG figures and the final conclusion.
+No scripts are used for the experiments or the analysis, as the proposal requires. The `run` / `run.ps1` launchers only call `arqsim` commands in order.
 
 > Course project: *Experimental Performance Analysis of Stop-and-Wait and Go-Back-N ARQ over UDP under Controlled Packet Loss and Delay*, extended with additional modulation and protocol modules.
 
@@ -41,8 +45,64 @@ cmake --build build
 ctest --test-dir build              # unit + end-to-end tests
 ```
 
-On Windows with MSYS2 UCRT64 you need the packages `mingw-w64-ucrt-x86_64-gcc`, `-cmake` and `-ninja`.
+| Platform | Install the toolchain |
+|----------|-----------------------|
+| Windows | MSYS2 UCRT64: `mingw-w64-ucrt-x86_64-gcc`, `-cmake`, `-ninja` (or Visual Studio 2019+ with CMake) |
+| Debian / Ubuntu | `sudo apt install build-essential cmake ninja-build` |
+| Fedora | `sudo dnf install gcc-c++ cmake ninja-build` |
+| macOS | `xcode-select --install && brew install cmake ninja` |
+
 The produced `build/arqsim.exe` is statically linked.
+
+## Run everything with one command (Windows, Linux, macOS)
+
+```powershell
+.\run            # Windows (PowerShell); cmd.exe: run
+.\run -Quick
+.\run -NoSweep
+```
+
+```bash
+./run             # Linux, macOS (and Git Bash on Windows)
+./run --quick
+./run --no-sweep
+```
+
+| Option | What runs | Time |
+|--------|-----------|------|
+| *(none)* | build, tests, every demo, then **all** experiment presets (1 025 runs) | ~8-10 min |
+| quick | same, but only the short `quick` sweep (36 runs) | ~1 min |
+| no-sweep | build, tests and demos only | ~1 min |
+
+The script works out the OS by itself. `./run` (POSIX `sh`) runs natively on Linux and macOS; on Windows it hands over to `run.ps1`, and `run.ps1` started with PowerShell 7 on Linux/macOS hands over to `./run`.
+If CMake or a compiler is missing, it prints the install command for your platform (`apt`/`dnf`, or `xcode-select` + `brew`).
+CI runs the same script as an end-to-end test on all three platforms (see [CI/CD](#cicd)).
+
+The script builds the project, runs the tests, and runs one demo per feature:
+SW/GBN/SR, the utilisation check against theory, fixed vs adaptive RTO, burst loss, NAK, modulation and AMC, the BER table, a packet-level trace and the three-process UDP mode with SHA-256 comparison.
+It then runs the sweeps and prints every table and ASCII bar chart.
+
+At the end it prints a **Conclusion** (`arqsim conclude <dir>`, written in C++), computed from the CSV files of that run (nothing is hard-coded):
+
+* one finding per study: theory check, SR vs GBN vs SW, fixed vs adaptive RTO, NAK, burst loss, modulation cliffs, integrity
+* a **verdict** that picks the best combination from the data and says why, plus when the choice does not matter:
+
+```
+  BEST OVERALL: SR + adaptive RTO (RFC 6298) + adaptive modulation (AMC)
+  because
+    SR has the highest throughput at 4 of 5 loss levels, including 3 of 4 lossy ones.
+      at 20 % loss it is 1.6x faster than GBN and needs 3.4x fewer retransmissions.
+    Adaptive RTO needs no more retransmissions than the fixed one in 8 of 8 cases;
+    AMC is within 10 % of the best fixed modulation at 7 of 8 usable SNR points;
+    when it does NOT matter:
+      without loss GBN and SR are equal, and GBN has the simpler receiver;
+      NAKs add at most 5 % to SR, so they are optional there (they matter for GBN).
+```
+
+With `-Quick` the verdict is a one-line protocol comparison.
+Output goes to `out/`, which is git-ignored, so the committed `results/` are left untouched.
+
+> Parallel sweeps give every job its own block of UDP ports. On Windows, Hyper-V/WinNAT reserves port ranges that change after each reboot (`netsh int ipv4 show excludedportrange protocol=udp`), so the sweep first checks each block and skips any that cannot be bound.
 
 ## Quick start
 
@@ -94,6 +154,7 @@ The sender and the receiver both print the SHA-256 of the file, so you can check
 arqsim sweep --preset all --out results        # every study, ~8 min (8 parallel jobs)
 arqsim sweep --proto sw,gbn,sr --loss 0,0.05,0.1 --rtt 20,100 --win 4,16 --reps 3 --out results/custom
 arqsim report results/custom/raw.csv           # re-aggregate
+arqsim conclude results                        # findings + best protocol/RTO/modulation
 arqsim plot results/proposal/summary.csv --x rtt_ms --y throughput_kbps \
             --series protocol,window --where loss=0.05 --out fig.svg
 ```
@@ -119,6 +180,30 @@ The results committed in [`results/`](results/) and discussed in [`docs/RESULTS.
 * **Modulation.** Every scheme has a ~3 dB SNR cliff below which ARQ cannot deliver at all. AMC tracks the best scheme from BPSK (939 kbit/s) up to 64-QAM (4 544 kbit/s).
 * **Integrity.** Every completed transfer was bit-exact: 0 corrupted files out of 935 completed runs. The 90 aborted runs are all modulation/SNR pairs below the cliff.
 
+## CI/CD
+
+| Workflow | Trigger | What it does |
+|----------|---------|--------------|
+| [`ci.yml`](.github/workflows/ci.yml) → **build + unit tests** | every push and PR | builds with CMake and runs `ctest` on Ubuntu, macOS and Windows |
+| [`ci.yml`](.github/workflows/ci.yml) → **e2e** | every push and PR, after the build | runs `./run --quick` on all three platforms and checks the output: every step succeeded, all tests passed, the 3-process UDP transfer has matching SHA-256, the sweep wrote its CSV/SVG files, 0 corrupted files, a verdict was printed. Logs and `out/` are uploaded as artifacts. |
+| [`ci.yml`](.github/workflows/ci.yml) → **e2e full study** | every Monday, or by hand (*Run workflow*) | runs the complete `./run` (1 025 runs) on Ubuntu and checks the `BEST OVERALL` verdict |
+| [`release.yml`](.github/workflows/release.yml) | pushing a tag `v*` | builds and tests on all three platforms, then publishes `arqsim-<tag>-linux-x86_64.tar.gz`, `-macos-arm64.tar.gz` and `-windows-x86_64.zip` as a GitHub release |
+
+Publishing a release:
+
+```bash
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+[Dependabot](.github/dependabot.yml) checks the GitHub Actions used by these workflows every Monday and opens one grouped PR when they have updates.
+The C++ code has no third-party dependencies, so there is nothing else to track.
+
+## Contributing
+
+Open a pull request against `main`. The [PR template](.github/pull_request_template.md) asks what changed, how it was tested (`ctest` and `./run --quick`), and whether `results/` and the docs still match the code.
+CI must be green on all three platforms before merging.
+
 ## Documentation
 
 * [`docs/REPORT.pdf`](docs/REPORT.pdf): final report (theory, design, methodology, results, discussion)
@@ -134,8 +219,10 @@ src/phy         modulation, AWGN, BER theory, AMC
 src/channel     loss models + channel emulator
 src/arq         SW / GBN / SR sender, receiver, RTO estimators
 src/experiment  runner, sweeps/presets, statistics, CSV, SVG charts
-src/cli         arqsim command-line interface
+src/cli         arqsim command-line interface, including `conclude` (findings + verdict)
 tests           unit + end-to-end tests
+run, run.ps1    one-command launchers (Linux/macOS, Windows); run.cmd for cmd.exe
+.github         CI/CD workflows, Dependabot config, PR template
 ```
 
 ## References

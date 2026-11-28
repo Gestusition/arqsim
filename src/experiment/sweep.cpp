@@ -6,7 +6,10 @@
 #include <thread>
 #include <cstdio>
 #include <set>
+#include <stdexcept>
 #include <tuple>
+
+#include "net/udp_socket.hpp"
 
 namespace arq {
 
@@ -69,23 +72,55 @@ void shiftPorts(RunSpec& s, std::uint16_t offset) {
                         &s.channel.dataIn, &s.channel.ackIn, &s.channel.receiver, &s.channel.sender})
         e->port = std::uint16_t(e->port + offset);
 }
+
+// True if every port a run binds (sender, channel DATA/ACK in, receiver) is free at this offset.
+// Windows reserves shifting UDP ranges (Hyper-V/WinNAT, see `netsh int ipv4 show
+// excludedportrange protocol=udp`), so a fixed block layout can collide with them.
+bool blockIsFree(RunSpec s, std::uint16_t offset) {
+    shiftPorts(s, offset);
+    try {
+        UdpSocket a, b, c, d;
+        a.bind(s.arq.senderLocal);
+        b.bind(s.channel.dataIn);
+        c.bind(s.channel.ackIn);
+        d.bind(s.arq.receiverLocal);
+        return true;
+    } catch (const std::exception&) {
+        return false;
+    }
+}
+
+// Picks `jobs` port offsets (multiples of 100) whose ports can actually be bound.
+std::vector<std::uint16_t> freePortOffsets(const RunSpec& base, int jobs) {
+    std::vector<std::uint16_t> out;
+    const int maxPort = std::max({base.arq.senderLocal.port, base.channel.dataIn.port, base.channel.ackIn.port,
+                                  base.arq.receiverLocal.port});
+    for (int off = 0; int(out.size()) < jobs && maxPort + off <= 65535; off += 100)
+        if (blockIsFree(base, std::uint16_t(off))) out.push_back(std::uint16_t(off));
+    if (out.empty()) throw std::runtime_error("sweep: no free block of UDP ports found");
+    return out;
+}
 }  // namespace
 
 Table runSweep(const SweepPlan& plan, const ProgressFn& progress) {
     Table t(resultColumns());
     auto specs = plan.expand();
     std::vector<RunResult> results(specs.size());
-    const int jobs = std::max(1, std::min<int>(plan.jobs, int(specs.size())));
+    if (specs.empty()) return t;
 
     // Every worker owns a private block of UDP ports, so up to `jobs`
     // sender/channel/receiver triples run side by side without interfering.
+    // Blocks reserved by the OS are skipped.
+    const auto offsets =
+        freePortOffsets(specs.front(), std::max(1, std::min<int>(plan.jobs, int(specs.size()))));
+    const int jobs = int(offsets.size());
     std::atomic<std::size_t> next{0};
     std::size_t done = 0;
     std::mutex mu;
     auto worker = [&](int slot) {
         for (std::size_t i = next++; i < specs.size(); i = next++) {
             RunSpec s = specs[i];
-            shiftPorts(s, std::uint16_t(slot * 100));
+            shiftPorts(s, offsets[std::size_t(slot)]);
             RunResult r = runExperiment(s);
             r.spec = specs[i];  // report the canonical configuration
             std::lock_guard<std::mutex> lock(mu);
