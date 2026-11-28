@@ -263,6 +263,15 @@ int main(int argc, char** argv) {
                 CHECK(r.bytesReceived == s.fileBytes);
             }
             if (lossless) CHECK(r.retransmissions <= 1);
+            // Stop-and-Wait has no queueing, so every RTT sample should be the emulated
+            // RTT plus one serialisation delay. A larger value means the emulator
+            // delivers late (e.g. OS timer coalescing on macOS).
+            if (lossless && c.p == ProtocolKind::StopAndWait) {
+                const double expected = s.channel.rttMs + 1014.0 * 8.0 * 1000.0 / r.linkRateBps;
+                if (r.meanRttMs > expected + 10.0)
+                    std::printf("    note: mean RTT %.1f ms, expected about %.1f ms\n", r.meanRttMs, expected);
+                CHECK(r.meanRttMs <= expected + 10.0);
+            }
             if (c.loss > 0.0) CHECK(r.retransmissions > 0);
         });
     }

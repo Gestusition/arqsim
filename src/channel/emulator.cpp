@@ -75,6 +75,7 @@ ChannelEmulator::ChannelEmulator(ChannelConfig cfg, std::size_t frameBytesHint)
       rate_(mod_ == Modulation::None ? cfg_.rateBps : cfg_.symbolRate * bitsPerSymbol(mod_)) {}
 
 void ChannelEmulator::run(const std::atomic<bool>& stop) {
+    preciseTimersForThisThread();
     UdpSocket dataSock, ackSock;
     dataSock.bind(cfg_.dataIn);
     ackSock.bind(cfg_.ackIn);
