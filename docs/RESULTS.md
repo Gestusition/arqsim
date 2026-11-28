@@ -192,7 +192,7 @@ Independent-loss experiments therefore **overestimate SW and underestimate the w
 
 ## Emulation accuracy
 
-The committed results above predate the delivery-lateness metric (`late_mean_ms`, `late_max_ms`, added in arqsim 1.1). To measure how faithfully the emulator reproduced the configured delays, the full study was run **once more, separately**: same Windows machine, same command, 8 parallel workers, 460 s.
+The committed results above predate the delivery-lateness metric (`late_mean_ms`, `late_max_ms`, added after they were produced). To measure how faithfully the emulator reproduced the configured delays, the full study was run **once more, separately**: same Windows machine, same command, 8 parallel workers, 460 s.
 That run is **not** committed. `results/` is unchanged and still matches the report.
 
 **Delivery lateness** (how much later than scheduled the channel released a packet), over the 935 completed runs:

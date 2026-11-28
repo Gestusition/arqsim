@@ -1,6 +1,6 @@
 name: release
 
-# Pushing a version tag (e.g. `git tag v1.1.0 && git push origin v1.1.0`) builds and tests
+# Pushing a version tag (e.g. `git tag v1.0.1 && git push origin v1.0.1`) builds and tests
 # arqsim on Linux, macOS and Windows and publishes the binaries as a GitHub release.
 on:
   push:
@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     inputs:
       tag:
-        description: "Existing tag to (re)publish, e.g. v1.1.0"
+        description: "Existing tag to (re)publish, e.g. v1.0.0"
         required: true
 
 permissions:

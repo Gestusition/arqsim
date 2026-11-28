@@ -205,8 +205,8 @@ The committed [`results/`](results/) were produced on Windows. See [Emulation ac
 Publishing a release:
 
 ```bash
-git tag v1.1.0
-git push origin v1.1.0
+git tag v1.0.1                  # must match project(VERSION) in CMakeLists.txt
+git push origin v1.0.1
 ```
 
 [Dependabot](.github/dependabot.yml) checks the GitHub Actions used by these workflows every Monday and opens one grouped PR when they have updates.
