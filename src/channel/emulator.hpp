@@ -46,6 +46,9 @@ struct ChannelStats {
     std::atomic<std::uint64_t> dataIn{0}, dataDropped{0}, dataCorrupted{0};
     std::atomic<std::uint64_t> ackIn{0}, ackDropped{0}, ackCorrupted{0};
     std::atomic<std::uint64_t> bitErrors{0}, bitsCarried{0};
+    // Emulation accuracy: how late packets left the channel compared with their
+    // scheduled delivery time (microseconds), and the final spin window.
+    std::atomic<std::uint64_t> delivered{0}, lateSumUs{0}, lateMaxUs{0}, spinWindowUs{0};
 };
 
 class ChannelEmulator {

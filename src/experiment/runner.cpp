@@ -106,6 +106,9 @@ RunResult runExperiment(const RunSpec& spec, const std::vector<std::uint8_t>* fi
     r.rxOutOfOrder = rx.outOfOrder;
     r.meanRttMs = tx.meanRttMs;
     r.finalRtoMs = tx.finalRtoMs;
+    r.lateMeanMs = cs.delivered ? double(cs.lateSumUs) / double(cs.delivered) / 1000.0 : 0.0;
+    r.lateMaxMs = double(cs.lateMaxUs) / 1000.0;
+    r.spinWindowMs = double(cs.spinWindowUs) / 1000.0;
     return r;
 }
 
@@ -118,7 +121,7 @@ std::vector<std::string> resultColumns() {
             "packets",        "data_tx",       "retransmissions", "timeouts",       "acks",
             "naks",           "ch_data_drop",  "ch_ack_drop",    "ch_data_corrupt", "ch_ack_corrupt",
             "rx_corrupted",   "rx_duplicates", "rx_out_of_order", "ber",            "mean_rtt_ms",
-            "final_rto_ms",   "sha256"};
+            "final_rto_ms",   "late_mean_ms",  "late_max_ms",    "spin_window_ms",  "sha256"};
 }
 
 std::vector<std::string> resultRow(const RunResult& r) {
@@ -166,6 +169,9 @@ std::vector<std::string> resultRow(const RunResult& r) {
             fmt(r.measuredBer, 8),
             fmt(r.meanRttMs, 3),
             fmt(r.finalRtoMs, 2),
+            fmt(r.lateMeanMs, 3),
+            fmt(r.lateMaxMs, 3),
+            fmt(r.spinWindowMs, 1),
             r.sha256Received};
 }
 

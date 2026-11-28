@@ -243,34 +243,43 @@ int main(int argc, char** argv) {
             s.channel.snrDb = c.snr;
             s.fileBytes = 30000 + 123;  // non-multiple of payload: last packet is short
             s.seed = 77;
-            RunResult r = runExperiment(s);
-            CHECK(r.completed);
-            CHECK(r.integrityPass);
-            CHECK(r.bytesReceived == s.fileBytes);
-            // Lossless, ideal PHY: no retransmissions expected (one tolerated). A
-            // retransmission here can only come from a spurious timeout, i.e. the OS
-            // paused a thread for longer than RTO - RTT (40 ms), which happens on
-            // shared CI VMs. That is a timing property, not a correctness one, so it
-            // gets one retry; the integrity checks above stay strict on every attempt.
             const bool lossless = c.loss == 0.0 && std::string(c.mod) == "none";
-            if (lossless && r.retransmissions > 1) {
-                std::printf("    note: %llu retransmissions (%llu timeouts) in a lossless run, "
-                            "likely a scheduling stall; retrying once\n",
-                            (unsigned long long)r.retransmissions, (unsigned long long)r.timeouts);
-                r = runExperiment(s);
+            // Timing properties of one run. They depend on the OS scheduler, so a
+            // run that misses them is repeated once; correctness is checked strictly
+            // on every attempt.
+            auto timingProblem = [&](const RunResult& r) -> std::string {
+                char why[160] = "";
+                // The emulator must deliver on schedule on every OS (it learns how
+                // late select() wakes up and spins for the rest).
+                if (r.lateMeanMs > 2.0)
+                    std::snprintf(why, sizeof(why), "deliveries late by %.2f ms on average (max %.1f)", r.lateMeanMs,
+                                  r.lateMaxMs);
+                // Lossless, ideal PHY: a retransmission can only be a spurious timeout.
+                else if (lossless && r.retransmissions > 1)
+                    std::snprintf(why, sizeof(why), "%llu retransmissions in a lossless run",
+                                  (unsigned long long)r.retransmissions);
+                // Stop-and-Wait has no queueing: RTT = emulated RTT + one serialisation.
+                else if (lossless && c.p == ProtocolKind::StopAndWait) {
+                    const double expected = s.channel.rttMs + 1014.0 * 8.0 * 1000.0 / r.linkRateBps;
+                    if (r.meanRttMs > expected + 10.0)
+                        std::snprintf(why, sizeof(why), "mean RTT %.1f ms, expected about %.1f ms", r.meanRttMs,
+                                      expected);
+                }
+                return why;
+            };
+            RunResult r = runExperiment(s);
+            for (int attempt = 1;; ++attempt) {
                 CHECK(r.completed);
                 CHECK(r.integrityPass);
                 CHECK(r.bytesReceived == s.fileBytes);
-            }
-            if (lossless) CHECK(r.retransmissions <= 1);
-            // Stop-and-Wait has no queueing, so every RTT sample should be the emulated
-            // RTT plus one serialisation delay. A larger value means the emulator
-            // delivers late (e.g. OS timer coalescing on macOS).
-            if (lossless && c.p == ProtocolKind::StopAndWait) {
-                const double expected = s.channel.rttMs + 1014.0 * 8.0 * 1000.0 / r.linkRateBps;
-                if (r.meanRttMs > expected + 10.0)
-                    std::printf("    note: mean RTT %.1f ms, expected about %.1f ms\n", r.meanRttMs, expected);
-                CHECK(r.meanRttMs <= expected + 10.0);
+                const std::string problem = timingProblem(r);
+                if (problem.empty() || attempt == 2) {
+                    if (!problem.empty()) std::printf("    timing: %s\n", problem.c_str());
+                    CHECK(problem.empty());
+                    break;
+                }
+                std::printf("    note: %s; retrying once\n", problem.c_str());
+                r = runExperiment(s);
             }
             if (c.loss > 0.0) CHECK(r.retransmissions > 0);
         });

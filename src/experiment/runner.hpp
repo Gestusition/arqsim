@@ -44,6 +44,9 @@ struct RunResult {
     double measuredBer = 0.0;
     double meanRttMs = 0.0;
     double finalRtoMs = 0.0;
+    // Emulation accuracy: lateness of channel deliveries vs their schedule (ms)
+    // and the spin window the emulator settled on.
+    double lateMeanMs = 0.0, lateMaxMs = 0.0, spinWindowMs = 0.0;
 };
 
 /// Deterministic pseudo-random test file (so every protocol sends the same bytes).
