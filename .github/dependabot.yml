@@ -1,0 +1,17 @@
+# Dependabot keeps the GitHub Actions used by CI and release up to date.
+# The C++ code has no third-party dependencies (everything, including CRC-32,
+# SHA-256 and the SVG charts, is implemented in this repository), so GitHub
+# Actions is the only ecosystem to watch.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: ci
+    groups:
+      github-actions:
+        patterns: ["*"]

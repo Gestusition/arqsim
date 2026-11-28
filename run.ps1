@@ -131,13 +131,21 @@ $rx = Start-Process -FilePath $exe -ArgumentList 'receiver', '--proto', 'sr', '-
         -RedirectStandardOutput $rxLog -NoNewWindow -PassThru
 Start-Sleep -Milliseconds 700
 Write-Host '  > arqsim sender --proto sr --win 8 --nak --rto adaptive --rtt 30' -ForegroundColor Yellow
-& $exe sender --proto sr --win 8 --nak --rto adaptive --rtt 30
+$txOut = & $exe sender --proto sr --win 8 --nak --rto adaptive --rtt 30
 if ($LASTEXITCODE -ne 0) { $failures.Add('3-process sender') }
+$txOut | ForEach-Object { $_ }
 if (-not $rx.WaitForExit(15000)) { Stop-Process -Id $rx.Id -Force; $failures.Add('3-process receiver') }
 Stop-Process -Id $ch.Id -Force -ErrorAction SilentlyContinue
 Start-Sleep -Milliseconds 200
 Write-Host '  --- receiver output ---'; Get-Content $rxLog | ForEach-Object { "  $_" }
-Write-Host '  (compare the sender and receiver sha256 lines: identical = bit-exact transfer)' -ForegroundColor DarkGray
+$txSha = ($txOut | Select-String '^sender: sha256 (\S+)').Matches.Groups[1].Value
+$rxSha = (Get-Content $rxLog | Select-String '^receiver: sha256 (\S+)').Matches.Groups[1].Value
+if ($txSha -and $txSha -eq $rxSha) {
+    Write-Host '  SHA-256 match: the received file is bit-exact' -ForegroundColor Green
+} else {
+    Write-Host "  SHA-256 mismatch: sent $txSha, received $rxSha" -ForegroundColor Red
+    $failures.Add('3-process SHA-256')
+}
 
 # ------------------------------------------------------------------ sweeps
 if (-not $NoSweep) {

@@ -152,7 +152,8 @@ RX=$!
 trap 'kill $CH $RX 2>/dev/null' EXIT INT TERM
 sleep 1
 printf "  ${Y}> arqsim sender --proto sr --win 8 --nak --rto adaptive --rtt 30${N}\n"
-"$EXE" sender --proto sr --win 8 --nak --rto adaptive --rtt 30 || fail "3-process sender"
+"$EXE" sender --proto sr --win 8 --nak --rto adaptive --rtt 30 >"$OUT/sender.log" 2>&1 || fail "3-process sender"
+cat "$OUT/sender.log"
 i=0; while kill -0 $RX 2>/dev/null && [ $i -lt 150 ]; do sleep 0.1; i=$((i + 1)); done
 if kill -0 $RX 2>/dev/null; then kill $RX 2>/dev/null; fail "3-process receiver"; fi
 wait $RX 2>/dev/null
@@ -160,7 +161,14 @@ kill $CH 2>/dev/null; wait $CH 2>/dev/null
 trap - EXIT INT TERM
 echo "  --- receiver output ---"
 indent <"$OUT/receiver.log"
-printf "  ${D}(compare the sender and receiver sha256 lines: identical = bit-exact transfer)${N}\n"
+TX_SHA=$(sed -n 's/^sender: sha256 //p' "$OUT/sender.log")
+RX_SHA=$(sed -n 's/^receiver: sha256 //p' "$OUT/receiver.log")
+if [ -n "$TX_SHA" ] && [ "$TX_SHA" = "$RX_SHA" ]; then
+    printf "  ${G}SHA-256 match: the received file is bit-exact${N}\n"
+else
+    printf "  ${R}SHA-256 mismatch: sent %s, received %s${N}\n" "${TX_SHA:-?}" "${RX_SHA:-?}"
+    fail "3-process SHA-256"
+fi
 
 # ------------------------------------------------------------------ sweeps
 if [ "$NOSWEEP" = 0 ]; then

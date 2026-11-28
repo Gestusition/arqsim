@@ -1,24 +1,98 @@
-name: build-and-test
+name: ci
 
 on:
   push:
   pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 3 * * 1"   # Mondays 03:00 UTC: full study (1 025 runs) as an end-to-end check
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   build:
+    name: build + unit tests (${{ matrix.os }})
     strategy:
       fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - name: Configure
         run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
       - name: Build
         run: cmake --build build --config Release --parallel
-      - name: Test
+      - name: Unit + integration tests
         run: ctest --test-dir build -C Release --output-on-failure
-      - name: One-command run (demos + quick sweep + conclusion)
+
+  e2e:
+    name: e2e one-command run (${{ matrix.os }})
+    needs: build
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v7
+      - name: ./run --quick (build, tests, demos, 3-process UDP, sweep, conclusion)
         shell: bash
-        run: ./run --quick   # detects the OS; hands over to run.ps1 on Windows
+        run: ./run --quick 2>&1 | tee e2e.log   # detects the OS; hands over to run.ps1 on Windows
+      - name: Verify end-to-end results
+        shell: bash
+        run: |
+          fail=0
+          check() { if grep -q "$1" e2e.log; then echo "ok   $2"; else echo "FAIL $2"; fail=1; fi; }
+          check "ALL STEPS SUCCEEDED"                        "every step of the run succeeded"
+          check "all tests passed"                           "unit + end-to-end tests passed"
+          check "SHA-256 match"                              "3-process UDP transfer is bit-exact"
+          check "BEST IN THIS RUN"                           "conclusion printed a verdict"
+          check " 0 corrupted files"                         "no corrupted file in the sweep"
+          for f in out/quick/raw.csv out/quick/summary.csv out/ber.csv out/ber.svg; do
+            if [ -s "$f" ]; then echo "ok   $f written"; else echo "FAIL $f missing"; fail=1; fi
+          done
+          n=$(find out/quick -name '*.svg' | wc -l)
+          if [ "$n" -ge 1 ]; then echo "ok   $n sweep figures"; else echo "FAIL no sweep figures"; fail=1; fi
+          exit $fail
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-${{ matrix.os }}
+          path: |
+            e2e.log
+            out/
+          retention-days: 7
+
+  e2e-full:
+    name: e2e full study (ubuntu)
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v7
+      - name: ./run (all presets, 1 025 runs)
+        run: ./run 2>&1 | tee e2e-full.log
+      - name: Verify the full verdict
+        run: |
+          grep -q "ALL STEPS SUCCEEDED" e2e-full.log
+          grep -q "BEST OVERALL" e2e-full.log
+          grep -q " 0 corrupted files" e2e-full.log
+          grep -A12 "BEST OVERALL" e2e-full.log
+      - name: Upload results
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: e2e-full
+          path: |
+            e2e-full.log
+            out/
+          retention-days: 14
