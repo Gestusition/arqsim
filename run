@@ -1,0 +1,190 @@
+#!/bin/sh
+# One command that builds arqsim, runs the tests, demonstrates every feature,
+# runs every experiment and prints the findings and the verdict.
+#
+#   ./run              everything (all presets, ~8-10 min)
+#   ./run --quick      same, but the short 'quick' sweep
+#   ./run --no-sweep   build + tests + demos only
+#   ./run --jobs N     parallel experiments in the sweep
+#
+# Detects the OS on its own: Linux and macOS run natively here; on Windows
+# (Git Bash / MSYS2) it hands over to run.ps1. Results go to out/ (git-ignored).
+
+set -u
+ROOT=$(cd "$(dirname "$0")" && pwd)
+cd "$ROOT" || exit 1
+
+QUICK=0; NOSWEEP=0; JOBS=""
+while [ $# -gt 0 ]; do
+    case "$1" in
+        --quick|-q|-Quick) QUICK=1 ;;
+        --no-sweep|-NoSweep) NOSWEEP=1 ;;
+        --jobs|-Jobs) shift; JOBS="${1:-}" ;;
+        -h|--help) sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'; exit 0 ;;
+        *) echo "unknown option: $1 (try ./run --help)"; exit 2 ;;
+    esac
+    shift
+done
+
+# ------------------------------------------------------------------ OS detection
+case "$(uname -s)" in
+    Linux*)  OS=Linux ;;
+    Darwin*) OS=macOS ;;
+    MINGW*|MSYS*|CYGWIN*) OS=Windows ;;
+    *) OS=$(uname -s) ;;
+esac
+
+if [ "$OS" = Windows ] && [ -z "${ARQSIM_RUN_NATIVE:-}" ]; then
+    PS=$(command -v pwsh || command -v powershell || true)
+    if [ -n "$PS" ]; then
+        set --
+        [ "$QUICK" = 1 ] && set -- "$@" -Quick
+        [ "$NOSWEEP" = 1 ] && set -- "$@" -NoSweep
+        [ -n "$JOBS" ] && set -- "$@" -Jobs "$JOBS"
+        exec "$PS" -NoProfile -ExecutionPolicy Bypass -File "$ROOT/run.ps1" "$@"
+    fi
+fi
+
+EXT=""; [ "$OS" = Windows ] && EXT=".exe"
+BUILD="$ROOT/build"
+OUT="$ROOT/out"
+EXE="$BUILD/arqsim$EXT"
+TESTS="$BUILD/arqsim_tests$EXT"
+START=$(date +%s)
+STEP=0
+FAILED=""
+
+if [ -t 1 ]; then C='\033[36m'; Y='\033[33m'; G='\033[32m'; R='\033[31m'; D='\033[2m'; N='\033[0m'
+else C=''; Y=''; G=''; R=''; D=''; N=''; fi
+RULE="===================================================================================================="
+
+step() {
+    STEP=$((STEP + 1))
+    printf "\n${C}%s\n [%d] %s\n%s${N}\n" "$RULE" "$STEP" "$1" "$RULE"
+}
+fail() { FAILED="$FAILED${FAILED:+, }$1"; printf "  ${R}!! '%s' failed${N}\n" "$1"; }
+arq() {  # arq LABEL args...
+    label=$1; shift
+    printf "\n  ${Y}> arqsim %s${N}\n" "$*"
+    "$EXE" "$@" || fail "$label"
+}
+indent() { sed 's/^/  /'; }
+
+need() {
+    command -v "$1" >/dev/null 2>&1 && return 0
+    printf "${R}missing tool: %s${N}\n" "$1"
+    case "$OS" in
+        Linux) echo "  Debian/Ubuntu: sudo apt install build-essential cmake ninja-build"
+               echo "  Fedora:        sudo dnf install gcc-c++ cmake ninja-build" ;;
+        macOS) echo "  xcode-select --install && brew install cmake ninja" ;;
+        *)     echo "  install a C++17 compiler and CMake >= 3.16" ;;
+    esac
+    exit 1
+}
+
+printf "${C}arqsim run on %s (%s)${N}\n" "$OS" "$(uname -m)"
+
+# ------------------------------------------------------------------ build
+step "Build (CMake, Release)"
+need cmake
+if [ ! -f "$BUILD/CMakeCache.txt" ]; then
+    if command -v ninja >/dev/null 2>&1; then
+        cmake -S "$ROOT" -B "$BUILD" -G Ninja -DCMAKE_BUILD_TYPE=Release || exit 1
+    else
+        cmake -S "$ROOT" -B "$BUILD" -DCMAKE_BUILD_TYPE=Release || exit 1
+    fi
+fi
+cmake --build "$BUILD" --config Release --parallel || { echo "build failed"; exit 1; }
+# Multi-config generators (Xcode, Visual Studio) put the binaries in build/Release.
+if [ ! -x "$EXE" ] && [ -x "$BUILD/Release/arqsim$EXT" ]; then
+    EXE="$BUILD/Release/arqsim$EXT"; TESTS="$BUILD/Release/arqsim_tests$EXT"
+fi
+"$EXE" version
+
+# ------------------------------------------------------------------ tests
+step "Unit + end-to-end tests"
+if "$TESTS"; then printf "  ${G}all tests passed${N}\n"; else fail tests; fi
+
+# ------------------------------------------------------------------ demos
+mkdir -p "$OUT"
+
+step "Single runs: Stop-and-Wait vs Go-Back-N vs Selective Repeat (loss 5 %, RTT 50 ms, 5 reps)"
+arq "run sw"  run --proto sw --loss 0.05 --rtt 50 --reps 5
+arq "run gbn" run --proto gbn --win 8 --loss 0.05 --rtt 50 --reps 5
+arq "run sr"  run --proto sr --win 8 --loss 0.05 --rtt 50 --reps 5
+
+step "Theory check: measured vs theoretical utilisation (SW, no loss, adaptive RTO)"
+arq "run util" run --proto sw --rtt 10 --reps 6 --rto adaptive
+
+step "Fixed 2xRTT vs adaptive RFC 6298 RTO (GBN N=16, RTT 20 ms)"
+arq "run rto fixed"    run --proto gbn --win 16 --rtt 20 --loss 0.02 --reps 3 --rto fixed
+arq "run rto adaptive" run --proto gbn --win 16 --rtt 20 --loss 0.02 --reps 3 --rto adaptive
+
+step "Burst loss (Gilbert-Elliott) and NAK fast retransmission"
+arq "run burst" run --proto gbn --win 8 --loss 0.05 --loss-model gilbert --rtt 50 --reps 3
+arq "run nak"   run --proto gbn --win 8 --loss 0.05 --rtt 50 --nak --reps 3
+
+step "Physical layer: modulation over AWGN and adaptive modulation (AMC)"
+arq "run 16qam" run --proto sr --win 8 --mod 16qam --snr 20 --rto adaptive --reps 3
+arq "run amc"   run --proto sr --win 8 --mod auto --snr 13 --nak --reps 3
+arq "amc table" amc
+arq "ber"       ber --snr 0:30:2 --csv "$OUT/ber.csv" --svg "$OUT/ber.svg"
+
+step "Packet-level trace (SR N=4, 10 % loss, 16-QAM @ 20 dB, NAK, 10 kB file)"
+TRACE="$OUT/trace.log"
+printf "  ${Y}> arqsim run --proto sr --win 4 --loss 0.1 --mod 16qam --snr 20 --nak --file-kb 10 --verbose${N}\n"
+# Write to a file first: cutting a live pipe short could leave the process holding its UDP ports.
+"$EXE" run --proto sr --win 4 --loss 0.1 --mod 16qam --snr 20 --nak --file-kb 10 --verbose >"$TRACE" 2>&1
+LINES=$(wc -l <"$TRACE" | tr -d ' ')
+head -n 80 "$TRACE" | indent
+if [ "$LINES" -gt 80 ]; then
+    printf "  ${D}... %d more lines; full trace in %s${N}\n" $((LINES - 80)) "$TRACE"
+    tail -n 12 "$TRACE" | indent
+fi
+
+step "Three separate processes over UDP: channel -> receiver <- sender (proposal architecture)"
+echo "  channel : arqsim channel --loss 0.1 --rtt 30 --mod qpsk --snr 12   (UDP 50010/50011, background)"
+echo "  receiver: arqsim receiver --proto sr --win 8 --nak                 (UDP 50020, background)"
+"$EXE" channel --loss 0.1 --rtt 30 --mod qpsk --snr 12 >"$OUT/channel.log" 2>&1 &
+CH=$!
+"$EXE" receiver --proto sr --win 8 --nak --idle 30 --out "$OUT/received.bin" >"$OUT/receiver.log" 2>&1 &
+RX=$!
+trap 'kill $CH $RX 2>/dev/null' EXIT INT TERM
+sleep 1
+printf "  ${Y}> arqsim sender --proto sr --win 8 --nak --rto adaptive --rtt 30${N}\n"
+"$EXE" sender --proto sr --win 8 --nak --rto adaptive --rtt 30 || fail "3-process sender"
+i=0; while kill -0 $RX 2>/dev/null && [ $i -lt 150 ]; do sleep 0.1; i=$((i + 1)); done
+if kill -0 $RX 2>/dev/null; then kill $RX 2>/dev/null; fail "3-process receiver"; fi
+wait $RX 2>/dev/null
+kill $CH 2>/dev/null; wait $CH 2>/dev/null
+trap - EXIT INT TERM
+echo "  --- receiver output ---"
+indent <"$OUT/receiver.log"
+printf "  ${D}(compare the sender and receiver sha256 lines: identical = bit-exact transfer)${N}\n"
+
+# ------------------------------------------------------------------ sweeps
+if [ "$NOSWEEP" = 0 ]; then
+    arq presets presets
+    if [ "$QUICK" = 1 ]; then RES="$OUT/quick"; PRESET=quick; TITLE="preset quick"
+    else RES="$OUT/results"; PRESET=all; TITLE="ALL presets (proposal, protocols, modulation, rto, burst, nak)"; fi
+    step "Experiment sweep: $TITLE"
+    if [ -n "$JOBS" ]; then arq "sweep $PRESET" sweep --preset "$PRESET" --out "$RES" --jobs "$JOBS"
+    else arq "sweep $PRESET" sweep --preset "$PRESET" --out "$RES"; fi
+
+    step "Conclusion"
+    arq conclude conclude "$RES"
+fi
+
+# ------------------------------------------------------------------ summary
+step "Summary"
+ELAPSED=$(( $(date +%s) - START ))
+printf "  platform        %s\n" "$OS"
+printf "  total time      %02d:%02d\n" $((ELAPSED / 60)) $((ELAPSED % 60))
+printf "  output folder   %s\n" "$OUT"
+(cd "$OUT" && find . -type f \( -name '*.csv' -o -name '*.svg' \) | sed 's|^\./|    |' | sort)
+if [ -z "$FAILED" ]; then
+    printf "  ${G}status          ALL STEPS SUCCEEDED${N}\n"
+else
+    printf "  ${R}status          FAILED: %s${N}\n" "$FAILED"
+    exit 1
+fi

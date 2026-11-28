@@ -16,6 +16,7 @@
 #include "arq/sender.hpp"
 #include "channel/emulator.hpp"
 #include "cli/args.hpp"
+#include "cli/conclude.hpp"
 #include "core/checksum.hpp"
 #include "core/clock.hpp"
 #include "core/log.hpp"
@@ -645,6 +646,10 @@ int main(int argc, char** argv) {
         if (cmd == "amc") return cmdAmc(args);
         if (cmd == "report") return cmdReport(args);
         if (cmd == "plot") return cmdPlot(args);
+        if (cmd == "conclude") {
+            if (args.positional().empty()) throw std::runtime_error("usage: arqsim conclude <results dir>");
+            return arq::cli::printConclusion(args.positional()[0]);
+        }
         if (cmd == "channel") return cmdChannel(args);
         if (cmd == "sender") return cmdSender(args);
         if (cmd == "receiver") return cmdReceiver(args);

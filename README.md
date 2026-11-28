@@ -44,19 +44,35 @@ ctest --test-dir build              # unit + end-to-end tests
 On Windows with MSYS2 UCRT64 you need the packages `mingw-w64-ucrt-x86_64-gcc`, `-cmake` and `-ninja`.
 The produced `build/arqsim.exe` is statically linked.
 
-## Run everything with one command (Windows)
+## Run everything with one command (Windows, Linux, macOS)
 
 ```powershell
-.\run            # build, tests, every demo, then ALL experiment presets (~8-10 min)
-.\run -Quick     # same, but only the short 'quick' sweep (~1 min)
-.\run -NoSweep   # build, tests and demos only
+.\run            # Windows (PowerShell); cmd.exe: run
+.\run -Quick
+.\run -NoSweep
 ```
 
-`run.ps1` (or `run.cmd` from cmd.exe) builds the project, runs the tests, and runs one demo per feature:
+```bash
+./run             # Linux, macOS (and Git Bash on Windows)
+./run --quick
+./run --no-sweep
+```
+
+| Option | What runs | Time |
+|--------|-----------|------|
+| *(none)* | build, tests, every demo, then **all** experiment presets (1 025 runs) | ~8-10 min |
+| quick | same, but only the short `quick` sweep (36 runs) | ~1 min |
+| no-sweep | build, tests and demos only | ~1 min |
+
+The script works out the OS by itself. `./run` (POSIX `sh`) runs natively on Linux and macOS; on Windows it hands over to `run.ps1`, and `run.ps1` started with PowerShell 7 on Linux/macOS hands over to `./run`.
+If CMake or a compiler is missing, it prints the install command for your platform (`apt`/`dnf`, or `xcode-select` + `brew`).
+CI runs `./run --quick` on Ubuntu, macOS and Windows.
+
+The script builds the project, runs the tests, and runs one demo per feature:
 SW/GBN/SR, the utilisation check against theory, fixed vs adaptive RTO, burst loss, NAK, modulation and AMC, the BER table, a packet-level trace and the three-process UDP mode with SHA-256 comparison.
 It then runs the sweeps and prints every table and ASCII bar chart.
 
-At the end it prints a **Conclusion**, computed from the CSV files of that run (nothing is hard-coded):
+At the end it prints a **Conclusion** (`arqsim conclude <dir>`, written in C++), computed from the CSV files of that run (nothing is hard-coded):
 
 * one finding per study: theory check, SR vs GBN vs SW, fixed vs adaptive RTO, NAK, burst loss, modulation cliffs, integrity
 * a **verdict** that picks the best combination from the data and says why, plus when the choice does not matter:
@@ -128,6 +144,7 @@ The sender and the receiver both print the SHA-256 of the file, so you can check
 arqsim sweep --preset all --out results        # every study, ~8 min (8 parallel jobs)
 arqsim sweep --proto sw,gbn,sr --loss 0,0.05,0.1 --rtt 20,100 --win 4,16 --reps 3 --out results/custom
 arqsim report results/custom/raw.csv           # re-aggregate
+arqsim conclude results                        # findings + best protocol/RTO/modulation
 arqsim plot results/proposal/summary.csv --x rtt_ms --y throughput_kbps \
             --series protocol,window --where loss=0.05 --out fig.svg
 ```
