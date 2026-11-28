@@ -134,10 +134,11 @@ void ChannelEmulator::run(const std::atomic<bool>& stop) {
             if (overMs > 0)
                 spinWindowMs = std::min(kMaxSpinMs, std::max(spinWindowMs, overMs + kSpinMarginMs));
         }
-        if (idx < 0) {
-            if (waitMs == 0) std::this_thread::yield();
-            continue;
-        }
+        // Inside the spin window, poll without yielding: on macOS yield() also
+        // depresses the thread's priority, so the emulator could sit out a whole
+        // scheduler quantum (~10 ms) right before a delivery. A pure poll behaves
+        // the same on every OS.
+        if (idx < 0) continue;
 
         bool isData = (idx == 0);
         if (!socks[idx]->receive(buf, 0)) continue;
