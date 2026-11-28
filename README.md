@@ -55,7 +55,28 @@ The produced `build/arqsim.exe` is statically linked.
 `run.ps1` (or `run.cmd` from cmd.exe) builds the project, runs the tests, and runs one demo per feature:
 SW/GBN/SR, the utilisation check against theory, fixed vs adaptive RTO, burst loss, NAK, modulation and AMC, the BER table, a packet-level trace and the three-process UDP mode with SHA-256 comparison.
 It then runs the sweeps and prints every table and ASCII bar chart.
+
+At the end it prints a **Conclusion**, computed from the CSV files of that run (nothing is hard-coded):
+
+* one finding per study: theory check, SR vs GBN vs SW, fixed vs adaptive RTO, NAK, burst loss, modulation cliffs, integrity
+* a **verdict** that picks the best combination from the data and says why, plus when the choice does not matter:
+
+```
+  BEST OVERALL: SR + adaptive RTO (RFC 6298) + adaptive modulation (AMC)
+  because
+    SR has the highest throughput at 4 of 5 loss levels, including 3 of 4 lossy ones.
+      at 20 % loss it is 1.6x faster than GBN and needs 3.4x fewer retransmissions.
+    Adaptive RTO needs no more retransmissions than the fixed one in 8 of 8 cases;
+    AMC is within 10 % of the best fixed modulation at 7 of 8 usable SNR points;
+    when it does NOT matter:
+      without loss GBN and SR are equal, and GBN has the simpler receiver;
+      NAKs add at most 5 % to SR, so they are optional there (they matter for GBN).
+```
+
+With `-Quick` the verdict is a one-line protocol comparison.
 Output goes to `out/`, which is git-ignored, so the committed `results/` are left untouched.
+
+> Parallel sweeps give every job its own block of UDP ports. On Windows, Hyper-V/WinNAT reserves port ranges that change after each reboot (`netsh int ipv4 show excludedportrange protocol=udp`), so the sweep first checks each block and skips any that cannot be bound.
 
 ## Quick start
 
