@@ -35,7 +35,10 @@ using arq::cli::Args;
 
 namespace {
 
-constexpr const char* kVersion = "1.0.0";
+#ifndef ARQSIM_VERSION
+#define ARQSIM_VERSION "dev"  // set by CMake from project(VERSION)
+#endif
+constexpr const char* kVersion = ARQSIM_VERSION;
 std::atomic<bool> g_stop{false};
 
 void onSignal(int) { g_stop = true; }

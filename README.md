@@ -180,12 +180,25 @@ The results committed in [`results/`](results/) and discussed in [`docs/RESULTS.
 * **Modulation.** Every scheme has a ~3 dB SNR cliff below which ARQ cannot deliver at all. AMC tracks the best scheme from BPSK (939 kbit/s) up to 64-QAM (4 544 kbit/s).
 * **Integrity.** Every completed transfer was bit-exact: 0 corrupted files out of 935 completed runs. The 90 aborted runs are all modulation/SNR pairs below the cliff.
 
+## Platform notes
+
+arqsim builds and passes its tests on Windows, Linux and macOS. The *accuracy* of the timing emulation, however, depends on how promptly the OS wakes threads.
+Every run reports it: `arqsim run` prints a `channel timing:` line, and the CSVs have `late_mean_ms` / `late_max_ms` (how much later than scheduled the channel released packets).
+
+| Platform | Emulation accuracy |
+|----------|--------------------|
+| Windows, Linux | Deliveries are on schedule (mean lateness ≈ 0.01 ms). Measured RTTs match the configured ones. |
+| macOS | Stop-and-Wait is accurate to ~1-2 ms. With windowed protocols (GBN/SR), deliveries can be **several ms late on average** (6-9 ms on GitHub's macOS runners at RTT 50 ms), because the macOS scheduler preempts the emulator while it waits for the next delivery. Measured RTTs are then higher and throughput lower (by up to ~25 %) than on the other platforms. |
+
+For numbers you intend to report, use Windows or Linux, or check that `late_mean_ms` is close to zero.
+The committed [`results/`](results/) were produced on Windows. See [Emulation accuracy](docs/RESULTS.md#emulation-accuracy) for a full-study measurement.
+
 ## CI/CD
 
 | Workflow | Trigger | What it does |
 |----------|---------|--------------|
-| [`ci.yml`](.github/workflows/ci.yml) → **build + unit tests** | every push and PR | builds with CMake and runs `ctest` on Ubuntu, macOS and Windows |
-| [`ci.yml`](.github/workflows/ci.yml) → **e2e** | every push and PR, after the build | runs `./run --quick` on all three platforms and checks the output: every step succeeded, all tests passed, the 3-process UDP transfer has matching SHA-256, the sweep wrote its CSV/SVG files, 0 corrupted files, a verdict was printed. Logs and `out/` are uploaded as artifacts. |
+| [`ci.yml`](.github/workflows/ci.yml) → **build + unit tests** | every pull request and push to `main` | builds with CMake and runs `ctest` on Ubuntu, macOS and Windows |
+| [`ci.yml`](.github/workflows/ci.yml) → **e2e** | every pull request and push to `main`, after the build | runs `./run --quick` on all three platforms and checks the output: every step succeeded, all tests passed, the 3-process UDP transfer has matching SHA-256, the sweep wrote its CSV/SVG files, 0 corrupted files, a verdict was printed. Logs and `out/` are uploaded as artifacts. |
 | [`ci.yml`](.github/workflows/ci.yml) → **e2e full study** | every Monday, or by hand (*Run workflow*) | runs the complete `./run` (1 025 runs) on Ubuntu and checks the `BEST OVERALL` verdict |
 | [`release.yml`](.github/workflows/release.yml) | pushing a tag `v*` | builds and tests on all three platforms, then publishes `arqsim-<tag>-linux-x86_64.tar.gz`, `-macos-arm64.tar.gz` and `-windows-x86_64.zip` as a GitHub release |
 

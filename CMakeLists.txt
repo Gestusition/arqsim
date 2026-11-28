@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
-project(arqsim VERSION 1.0.0 LANGUAGES CXX)
+project(arqsim VERSION 1.1.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -36,6 +36,8 @@ endif()
 file(GLOB CLI_SOURCES CONFIGURE_DEPENDS ${CMAKE_SOURCE_DIR}/src/cli/*.cpp)
 add_executable(arqsim ${CLI_SOURCES})
 target_link_libraries(arqsim PRIVATE arqcore)
+# Single source of truth for the version: `arqsim version` prints project(VERSION).
+target_compile_definitions(arqsim PRIVATE ARQSIM_VERSION="${PROJECT_VERSION}")
 if(MINGW)
   target_link_options(arqsim PRIVATE -static)
 endif()
