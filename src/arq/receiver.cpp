@@ -14,7 +14,6 @@ namespace arq {
 ArqReceiver::ArqReceiver(const ArqConfig& cfg) : cfg_(cfg) {}
 
 ReceiverStats ArqReceiver::run(const std::atomic<bool>& stop, double idleTimeoutMs) {
-    preciseTimersForThisThread();
     UdpSocket sock;
     sock.bind(cfg_.receiverLocal);
     ready = true;

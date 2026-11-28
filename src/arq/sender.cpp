@@ -3,7 +3,6 @@
 #include <algorithm>
 #include <cmath>
 
-#include "core/clock.hpp"
 #include "core/log.hpp"
 
 namespace arq {
@@ -238,7 +237,6 @@ void ArqSender::sampleRtt(std::uint32_t seq, TimePoint now) {
 }
 
 SenderStats ArqSender::run(const std::vector<std::uint8_t>& file) {
-    preciseTimersForThisThread();
     file_ = &file;
     total_ = std::uint32_t((file.size() + cfg_.payloadBytes - 1) / cfg_.payloadBytes);
     stats_ = SenderStats{};
