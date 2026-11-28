@@ -190,9 +190,43 @@ The same average loss affects the protocols in opposite ways:
 
 Independent-loss experiments therefore **overestimate SW and underestimate the windowed protocols** on real bursty links such as wireless fading channels.
 
+## Emulation accuracy
+
+The committed results above predate the delivery-lateness metric (`late_mean_ms`, `late_max_ms`, added in arqsim 1.1). To measure how faithfully the emulator reproduced the configured delays, the full study was run **once more, separately**: same Windows machine, same command, 8 parallel workers, 460 s.
+That run is **not** committed. `results/` is unchanged and still matches the report.
+
+**Delivery lateness** (how much later than scheduled the channel released a packet), over the 935 completed runs:
+
+| Preset | Completed runs | Mean | Median | Worst run (mean) | Runs with mean < 0.1 ms |
+|--------|---------------:|-----:|-------:|-----------------:|------------------------:|
+| proposal | 400 | 0.015 ms | 0.002 ms | 0.71 ms | 97 % |
+| protocols | 75 | 0.007 ms | 0.002 ms | 0.11 ms | 99 % |
+| modulation | 180 | 0.018 ms | 0.002 ms | 1.31 ms | 98 % |
+| rto | 80 | 0.050 ms | 0.002 ms | 1.11 ms | 90 % |
+| burst | 120 | 0.006 ms | 0.002 ms | 0.15 ms | 99 % |
+| nak | 80 | 0.020 ms | 0.002 ms | 0.28 ms | 92 % |
+| **all** | **935** | **0.017 ms** | **0.002 ms** | **1.31 ms** | **96.7 %** |
+
+The 95th and 99th percentiles of the per-run mean are 0.06 ms and 0.30 ms. Isolated deliveries were occasionally late by up to 43 ms (an OS preemption), but these are rare enough that no run's mean exceeded 1.3 ms. The emulator's spin window stayed at its 16 ms minimum in 926 of the 935 runs.
+Compared with the delays being emulated (`L/R` = 4.06 ms, RTT 10–200 ms), the timing error is negligible.
+
+**Reproducibility.** `arqsim conclude` on the fresh run gives the same verdict and the same conclusions as on `results/`. The numbers differ only slightly:
+
+| Finding | `results/` | fresh run |
+|---------|-----------:|----------:|
+| SW utilisation vs theory (worst RTT) | within 1.8 % | within 3.2 % |
+| GBN (N=16) vs SW at RTT 200 ms | 486.8 vs 39.2 kbit/s (12.4×) | 486.4 vs 39.1 kbit/s (12.4×) |
+| SR / GBN / SW at 20 % loss | 215.9 / 132.1 / 64.6 kbit/s | 214.5 / 131.9 / 64.4 kbit/s |
+| Adaptive vs fixed RTO, worst case | −96 % retransmissions | −96 % retransmissions |
+| 64-QAM / AMC peak | 4 540 / 4 393 kbit/s | 4 523 / 4 371 kbit/s |
+| Completed / corrupted / aborted runs | 935 / 0 / 90 | 935 / 0 / 90 |
+
+**Other platforms.** These figures are for Windows, and Linux CI runners give the same picture. On macOS, the scheduler preempts the emulator while it waits for the next delivery. With windowed protocols this leaves deliveries several milliseconds late on average: 6–9 ms for GBN/SR at RTT 50 ms on GitHub's macOS runners. Results produced on macOS should therefore be checked with `late_mean_ms` before being compared with these numbers (see the README's platform notes).
+
 ## Threats to validity
 
 * All processes share one host and the loopback interface. CPU scheduling jitter of about 1 ms is absorbed by the 5 ms timer granularity and the emulator's spin-wait.
   Running 8 experiments in parallel did not change the results: SW at RTT 10 ms gives 557 kbit/s in parallel vs 552 serially.
+  The emulator's delivery lateness was measured directly in a separate full run: 0.017 ms on average (see [Emulation accuracy](#emulation-accuracy)).
 * Transfers are 50 packets long, so start-up and tail effects matter. They are part of the reported numbers, and §1.1 quantifies them.
 * With 5 repetitions the confidence intervals under loss are wide (±20–40 %). Conclusions are only drawn where the intervals do not overlap or where the trend holds across all settings.
